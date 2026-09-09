@@ -1,0 +1,29 @@
+{
+  "name": "medapp-frontend",
+  "version": "1.0.0",
+  "description": "Frontend Vue 3 para el sistema de citas médicas",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "pinia": "^2.2.2",
+    "vue": "^3.5.6",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.4",
+    "jsdom": "^25.0.1",
+    "vite": "^5.4.7",
+    "vitest": "^2.1.1"
+  },
+  "allowScripts": {
+    "vue-demi@0.14.10": true,
+    "esbuild@0.21.5": true
+  }
+}

@@ -1,0 +1,31 @@
+# Dependencias
+node_modules/
+
+# Bases de datos SQLite
+*.db
+*.db-journal
+*.sqlite
+
+# Variables de entorno
+.env
+.env.local
+
+# Builds
+dist/
+backend/dist/
+frontend/dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cobertura de tests
+coverage/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

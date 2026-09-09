@@ -1,0 +1,93 @@
+const appointmentModel = require('../models/appointment.model')
+const userModel = require('../models/user.model')
+
+const STATUS_RESPONSE = {
+  confirmed: 'Cita confirmada',
+  rejected: 'Cita rechazada',
+  cancelled: 'Cita cancelada',
+}
+
+function createAppointment(req, res, next) {
+  const { doctorId, date, time, reason } = req.body || {}
+
+  try {
+    if (!doctorId || !date || !time) {
+      return res.status(400).json({ error: 'doctorId, date y time son obligatorios' })
+    }
+
+    if (!isValidDate(date)) {
+      return res.status(400).json({ error: 'La fecha debe tener formato YYYY-MM-DD' })
+    }
+    if (!isValidTime(time)) {
+      return res.status(400).json({ error: 'La hora debe tener formato HH:MM' })
+    }
+
+    const doctor = userModel.findById(doctorId)
+    if (!doctor || doctor.role !== 'doctor') {
+      return res.status(400).json({ error: 'El doctor no existe o no es un médico válido' })
+    }
+
+    const appointment = appointmentModel.createAppointment({
+      patientId: req.user.id,
+      doctorId,
+      date,
+      time,
+      reason,
+    })
+
+    return res.status(201).json({ appointment })
+  } catch (err) {
+    next(err)
+  }
+}
+
+function listMyAppointments(req, res) {
+  const appointments = appointmentModel.listForUser(req.user.id)
+  return res.json({ appointments })
+}
+
+function listPending(req, res) {
+  const appointments = appointmentModel.listPending().filter(
+    (a) => a.doctor_id === req.user.id
+  )
+  return res.json({ appointments })
+}
+
+function updateStatus(status) {
+  return (req, res, next) => {
+    try {
+      const appointment = appointmentModel.setStatus(
+        req.params.id,
+        status,
+        req.user.id
+      )
+
+      if (!appointment) {
+        return res.status(404).json({ error: 'Cita no encontrada o sin permisos' })
+      }
+
+      return res.json({ appointment, message: STATUS_RESPONSE[status] })
+    } catch (err) {
+      next(err)
+    }
+  }
+}
+
+function isValidDate(date) {
+  const re = /^\d{4}-\d{2}-\d{2}$/
+  if (!re.test(date)) return false
+  const d = new Date(date)
+  return !Number.isNaN(d.getTime())
+}
+
+function isValidTime(time) {
+  return /^([01]\d|2[0-3]):[0-5]\d$/.test(time)
+}
+
+module.exports = {
+  createAppointment,
+  listMyAppointments,
+  listPending,
+  confirm: updateStatus('confirmed'),
+  reject: updateStatus('rejected'),
+}

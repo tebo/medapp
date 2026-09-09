@@ -1,0 +1,39 @@
+{
+  "name": "medapp-backend",
+  "version": "1.0.0",
+  "description": "API REST para el sistema de citas médicas",
+  "main": "src/app.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "citas",
+    "medicas",
+    "api",
+    "express",
+    "sqlite"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^13.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4",
+    "supertest": "^7.0.0",
+    "vitest": "^2.1.1"
+  },
+  "allowScripts": {
+    "esbuild@0.21.5": true,
+    "better-sqlite3@13.0.3": true
+  }
+}
