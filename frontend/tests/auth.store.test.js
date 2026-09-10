@@ -67,4 +67,41 @@ describe('auth store', () => {
     expect(localStorage.getItem('token')).toBeNull()
     expect(localStorage.getItem('medapp_user')).toBeNull()
   })
+
+  it('fetchMe actualiza el usuario y lo persiste', async () => {
+    // Recargar el perfil refresca los datos guardados en localStorage
+    localStorage.setItem('token', 'jwt-demo')
+    api.get.mockResolvedValue({
+      data: { user: { id: 1, name: 'Ana', email: 'ana@test.com', role: 'doctor' } },
+    })
+
+    const store = useAuthStore()
+    await store.fetchMe()
+
+    expect(api.get).toHaveBeenCalledWith('/auth/me')
+    expect(store.user.role).toBe('doctor')
+    expect(store.isDoctor).toBe(true)
+    expect(JSON.parse(localStorage.getItem('medapp_user')).role).toBe('doctor')
+  })
+
+  it('setSession persiste el token y el usuario recibidos', () => {
+    // Tras login/registro, la sesión queda respaldada en localStorage
+    const store = useAuthStore()
+
+    store.setSession({ token: 'jwt-nuevo', user: { id: 5, name: 'Luis', role: 'patient' } })
+
+    expect(localStorage.getItem('token')).toBe('jwt-nuevo')
+    expect(store.user.name).toBe('Luis')
+    expect(JSON.parse(localStorage.getItem('medapp_user')).id).toBe(5)
+  })
+
+  it('restaura la sesión guardada al crear el store', () => {
+    // Al recargar la página, la sesión previa se recupera de localStorage
+    localStorage.setItem('token', 'jwt-viejo')
+    localStorage.setItem('medapp_user', JSON.stringify({ id: 5, name: 'Luis', role: 'patient' }))
+
+    const store = useAuthStore()
+    expect(store.isAuthenticated).toBe(true)
+    expect(store.user.id).toBe(5)
+  })
 })

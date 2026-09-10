@@ -48,8 +48,8 @@ Para cada feature: prompt → revisión → ajuste (1-3 iteraciones) → siguien
 No avances a la siguiente feature sin verificar la anterior:
 
 ```bash
-npm test          # backend: 17 tests (auth + citas)
-npm test          # frontend: 3 tests (store de auth)
+npm test          # backend: 67 tests (auth + citas + médicos + unitarias)
+npm test          # frontend: 35 tests (store, router, componentes y API)
 npm run build     # frontend: build de producción
 ```
 
@@ -82,9 +82,11 @@ La IA acelera la documentación, pero tú verificas que los comandos funcionen
    + guía de IA como contenido.
 2. **Esqueleto:** estructura monorepo con `frontend/`, `backend/`, `docs/`,
    `docker/` y `.github/`.
-3. **Iteración backend:** auth → médicos → citas → flags de rol → tests.
+3. **Iteración backend:** auth → médicos → citas → flags de rol → tests →
+   refactor de validaciones a `utils/` con la regla "fecha no pasada".
 4. **Iteración frontend:** api.js + store → router → vistas → componentes.
-5. **Verificación:** 20 tests en total, build Vite OK, arranque de API OK.
+5. **Verificación:** 102 tests en total (67 backend + 35 frontend), build Vite
+   OK, arranque de API OK.
 6. **Documentación:** esta guía y el README, siempre verificando comandos.
 
 ## Tu propia práctica guiada

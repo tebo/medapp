@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const chapters = [
   {
@@ -44,6 +44,7 @@ const chapters = [
       { h: 'Prompt → Endpoint JWT', t: '«Añade un endpoint PATCH /api/appointments/:id/confirm que solo permita a un médico (rol doctor) confirmar una cita pendiente asignada a él. Usa middleware authenticate y authorize.»' },
       { h: 'Prompt → Componente Vue', t: '«Crea un componente Vue 3 con composition API <script setup> que muestre las citas del usuario: tarjeta con fecha, hora, médico y un badge de estado. Estilos scoped simples con clases banner.»' },
       { h: 'Prompt → Tests', t: '«Escribe tests con Vitest + Supertest para el flujo: paciente crea cita, médico confirma, paciente ve estado confirmed. La DB debe ser :memory:.»' },
+      { h: 'Prompt → Validaciones', t: '«Mueve la validación de fecha/hora a backend/src/utils/validation.js (isValidDate, isValidTime, isFutureDate) y añade la regla de negocio: una cita no puede tener fecha anterior a hoy (400). Escribe tests unitarios para cada caso: formato, calendario, fecha pasada y hora fuera de rango.»' },
     ],
   },
   {

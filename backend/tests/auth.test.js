@@ -87,4 +87,39 @@ describe('API de autenticación', () => {
     const res = await request(app).get('/api/auth/me')
     expect(res.status).toBe(401)
   })
+
+  it('rechaza un registro con campos incompletos', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Solo Nombre' })
+
+    expect(res.status).toBe(400)
+  })
+
+  it('rechaza un rol no permitido', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Admin', email: 'admin@test.com', password: 'secreto123', role: 'admin' })
+
+    expect(res.status).toBe(400)
+  })
+
+  it('rechaza un token manipulado', async () => {
+    const res = await request(app)
+      .get('/api/auth/me')
+      .set('Authorization', 'Bearer token-invalido')
+
+    expect(res.status).toBe(401)
+  })
+
+  it('rechaza un token expirado', async () => {
+    const jwt = require('jsonwebtoken')
+    const expired = jwt.sign({ sub: 1, role: 'patient' }, process.env.JWT_SECRET, { expiresIn: '0s' })
+
+    const res = await request(app)
+      .get('/api/auth/me')
+      .set('Authorization', `Bearer ${expired}`)
+
+    expect(res.status).toBe(401)
+  })
 })

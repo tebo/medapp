@@ -96,6 +96,10 @@ Respuesta `201`:
 }
 ```
 
+Validaciones: `date` obligatoria con formato `YYYY-MM-DD` y **no anterior a hoy**;
+`time` obligatoria con formato `HH:MM`. Errores: `400` si faltan campos, el formato
+es inválido, la fecha es pasada o el doctor no existe.
+
 #### Estados de una cita
 
 `pending` → `confirmed` | `rejected` | `cancelled`

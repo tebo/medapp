@@ -35,11 +35,11 @@ El ciclo de verificación no se negocia:
 
 ```bash
 # Backend
-npm test        # 17 tests verifican auth y citas
+npm test        # 67 tests (auth, citas, médicos y unitarias)
 
 # Frontend
 npm run build   # compila el bundle de producción
-npm test        # tests del store de auth
+npm test        # 35 tests (store, router, componentes y API)
 
 # Manual
 curl -X POST http://localhost:3001/api/auth/login \

@@ -61,9 +61,12 @@ reales enlazados con cada parte del código que ya existe en el repositorio.
 > (YYYY-MM-DD), time (HH:MM) y razón; validar fecha y hora con regex. GET
 > /api/appointments/mine para ver citas propias. GET /api/appointments/pending
 > para que un doctor vea las suyas. PATCH /:id/confirm y /:id/reject solo doctor
-> y solo sobre citas pending asignadas a él.»
+> y solo sobre citas pending asignadas a él. La fecha no puede ser anterior a
+> hoy: devuelve 400 si lo es.»
 
-**Resultado:** `backend/src/controllers/appointments.controller.js`.
+**Resultado:** `backend/src/controllers/appointments.controller.js` + las
+validaciones de fecha/hora en `backend/src/utils/validation.js` (`isValidDate`,
+`isFutureDate`, `isValidTime`).
 
 ## 4.7 Prompt → Endpoint de lista de médicos
 
@@ -80,7 +83,10 @@ reales enlazados con cada parte del código que ya existe en el repositorio.
 > pendientes, doctor confirma, paciente no puede confirmar (403). Usa globals y
 > un setup file que configure el entorno.»
 
-**Resultado:** `backend/tests/auth.test.js` y `backend/tests/appointments.test.js`.
+**Resultado:** `backend/tests/auth.test.js`, `backend/tests/appointments.test.js` y
+`backend/tests/doctors.test.js` (integración) más las suites unitarias
+`backend/tests/validation.test.js`, `backend/tests/middleware.auth.test.js` y
+`backend/tests/user.service.test.js`. En total **67 tests**.
 
 ## 4.9 Prompt → Cliente API del frontend
 
@@ -108,9 +114,28 @@ reales enlazados con cada parte del código que ya existe en el repositorio.
 
 **Resultado:** `frontend/src/views/DashboardPatient.vue` y `DashboardDoctor.vue`.
 
+## 4.12 Prompt → Refactor de validaciones y regla de negocio
+
+> «Mueve la validación de fecha y hora del controlador de citas a un módulo
+> backend/src/utils/validation.js con funciones isValidDate, isValidTime e
+> isFutureDate. Añade la regla de negocio "una cita no puede tener fecha
+> anterior a hoy" (devuelve 400) y escribe tests unitarios para cada caso:
+> formato, fecha inexistente en el calendario, pasada y hora fuera de rango.»
+
+**Resultado:** `backend/src/utils/validation.js` y `backend/tests/validation.test.js`
+(17 casos). Ejemplo real de la fase 4 del workflow: refactorizar con IA sin cambiar
+el comportamiento, y de que las reglas de negocio las define el ser humano.
+
 ## Cómo leer el resultado
 
 Cada prompt arriba no generó el archivo perfecto a la primera: requirió 1-3
 iteraciones de ajuste (p. ej. «los errores en español», «no devuelvas
 password_hash», «usa CHECK en SQL, no validación del modelo»). Esa iteración es
 parte natural del proceso.
+
+Un caso real ocurrió en `GuiaIAView.vue`: la vista usaba `computed()` en la
+plantilla pero el import inicial solo traía `ref`, así que la página no se
+renderizaba. La corrección fue una línea —`import { ref, computed } from 'vue'`—,
+típico de un "error común" del capítulo 5: código que parece completo pero rompe
+al ejecutarse. Ahí es exactamente cuando le muestras el trace a la IA y le pides
+arreglar *solo eso*.

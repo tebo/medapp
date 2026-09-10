@@ -39,7 +39,8 @@ demoapp1/
 │   │   ├── services/         # lógica de negocio
 │   │   ├── controllers/      # handlers HTTP
 │   │   ├── middleware/       # autenticación/autorización y errores
-│   │   └── routes/           # sin rutas
+│   │   ├── routes/           # endpoints por dominio (auth, doctors, citas)
+│   │   └── utils/            # validaciones (fecha/hora)
 │   └── tests/                # Vitest + Supertest
 ├── frontend/                 # Vue 3 + Vite + Pinia
 │   ├── src/
@@ -102,13 +103,14 @@ La misma guía está accesible **dentro de la aplicación** en la ruta `/guia-ia
 ## Tests
 
 ```bash
-cd backend  && npm test   # 17 tests (auth + citas)
-cd frontend && npm test   # 3 tests (store de auth)
+cd backend  && npm test   # 67 tests (auth + citas + médicos + unitarias)
+cd frontend && npm test   # 35 tests (store + router + componentes + api)
 ```
 
 ## CI/CD
 
-- `.github/workflows/ci.yml`: tests del backend + build del frontend en cada push.
+- `.github/workflows/ci.yml`: tests del backend y frontend + build del frontend
+  en cada push.
 - `.github/workflows/docker.yml`: construye y publica imágenes en
   `ghcr.io/<usuario>/<repo>-backend|frontend` en main y tags `v*`.
 

@@ -24,6 +24,7 @@ MedApp necesita pipelines de CI/CD con GitHub Actions para:
 - Checkout del código.
 - Setup Node.js 22 con cache de npm.
 - `npm ci` en directorio `frontend/`.
+- `npm test` en directorio `frontend/` (tests de store, router, componentes y API).
 - `npm run build` en directorio `frontend/` (verifica que el build funcione).
 
 ### 2. Workflow de Docker (`.github/workflows/docker.yml`)

@@ -1,5 +1,6 @@
 const appointmentModel = require('../models/appointment.model')
 const userModel = require('../models/user.model')
+const { isValidDate, isFutureDate, isValidTime } = require('../utils/validation')
 
 const STATUS_RESPONSE = {
   confirmed: 'Cita confirmada',
@@ -17,6 +18,9 @@ function createAppointment(req, res, next) {
 
     if (!isValidDate(date)) {
       return res.status(400).json({ error: 'La fecha debe tener formato YYYY-MM-DD' })
+    }
+    if (!isFutureDate(date)) {
+      return res.status(400).json({ error: 'La fecha no puede ser anterior a hoy' })
     }
     if (!isValidTime(time)) {
       return res.status(400).json({ error: 'La hora debe tener formato HH:MM' })
@@ -71,17 +75,6 @@ function updateStatus(status) {
       next(err)
     }
   }
-}
-
-function isValidDate(date) {
-  const re = /^\d{4}-\d{2}-\d{2}$/
-  if (!re.test(date)) return false
-  const d = new Date(date)
-  return !Number.isNaN(d.getTime())
-}
-
-function isValidTime(time) {
-  return /^([01]\d|2[0-3]):[0-5]\d$/.test(time)
 }
 
 module.exports = {

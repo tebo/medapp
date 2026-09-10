@@ -32,7 +32,7 @@ export default defineConfig({
 
 ### 3. Tests de Auth (`backend/tests/auth.test.js`)
 
-17 tests en total. Ejemplos:
+12 tests de integración. Ejemplos:
 
 - **Registro paciente**: POST `/api/auth/register` con `{ name, email, password, role: 'patient' }` → 201 con `token` y `user` (sin `password_hash`).
 - **Registro médico**: POST `/api/auth/register` con `{ name, email, password, role: 'doctor', specialty: 'Cardiología' }` → 201.
@@ -43,7 +43,7 @@ export default defineConfig({
 - **GET /me autenticado**: con token válido → 200 con usuario.
 - **GET /me sin token**: sin header → 401.
 
-### 4. Tests de Citas (`backend/tests/appointments.test.js`)
+### 4. Tests de Citas (`backend/tests/appointments.test.js` y `backend/tests/doctors.test.js`)
 
 - **Listar médicos**: GET `/api/doctors` → 200 con array.
 - **Crear cita**: POST `/api/appointments` como paciente → 201.
@@ -53,14 +53,35 @@ export default defineConfig({
 - **Paciente ve confirmada**: GET mine después de confirmar → status `confirmed`.
 - **Paciente no puede confirmar**: PATCH como paciente → 403.
 - **Fecha inválida**: POST con fecha malformada → 400.
+- **Fecha pasada**: POST con fecha anterior a hoy → 400.
 - **Médico no puede crear**: POST como doctor → 403.
 
-### 5. Tests Frontend (`frontend/tests/auth.store.test.js`)
+### 5. Tests unitarios del backend
 
-- Mockear `services/api` con `vi.mock`.
-- Test login: verificar que `store.login()` guarda token y user en el store.
-- Test registro doctor: verificar `isDoctor === true` y `isPatient === false`.
-- Test logout: verificar que limpia state y localStorage (`token`, `medapp_user`).
+- **`validation.test.js`**: casos de `isValidDate`, `isFutureDate` (hoy/futura/pasada)
+  e `isValidTime` (17 tests).
+- **`middleware.auth.test.js`**: `authenticate` (token válido, ausente, manipulado,
+  expirado) y `authorize` (rol permitido/prohibido).
+- **`user.service.test.js`**: hashing y normalización con dobles de `bcrypt`/modelos.
+
+En total el backend suma **67 tests**.
+
+### 6. Tests Frontend
+
+- **`auth.store.test.js`**: mockear `services/api` con `vi.mock`. Test login:
+  verificar que `store.login()` guarda token y user en el store; registro doctor:
+  `isDoctor === true` y `isPatient === false`; logout: limpia state y localStorage
+  (`token`, `medapp_user`); `fetchMe` y restauración de sesión.
+- **`router.test.js`**: redirección a login sin sesión, un paciente no entra a
+  `/dashboard/doctor`, un autenticado no entra a `/login`, la guía IA es pública.
+- **`NavBar.test.js`**: enlaces según rol (invitado/patient/doctor) y logout.
+- **`useAuth.test.js`**: `welcomeName`, redirección de login/register por rol, logout.
+- **`api.test.js`**: interceptor añade `Authorization: Bearer` con token, lo omite
+  sin token y limpia el token ante un `401`.
+- **`AppointmentCard.test.js`**: etiquetas de estado traducidas, formato de fecha,
+  emisión de `confirm`/`reject` y acciones visibles solo en pendientes.
+
+En total el frontend suma **35 tests**.
 
 ### Configuración Frontend
 
@@ -86,11 +107,20 @@ backend/
 └── tests/
     ├── setup.js
     ├── auth.test.js
-    └── appointments.test.js
+    ├── appointments.test.js
+    ├── doctors.test.js
+    ├── middleware.auth.test.js
+    ├── user.service.test.js
+    └── validation.test.js
 frontend/
 ├── vitest.config.js  (en vite.config.js)
 └── tests/
-    └── auth.store.test.js
+    ├── auth.store.test.js
+    ├── router.test.js
+    ├── NavBar.test.js
+    ├── useAuth.test.js
+    ├── api.test.js
+    └── AppointmentCard.test.js
 ```
 
 ### Ejecución

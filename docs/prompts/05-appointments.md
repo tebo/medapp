@@ -26,11 +26,15 @@ PATCH  /api/appointments/:id/reject    → reject              (solo doctor)
 **`createAppointment(req, res, next)`:**
 - Validar que `doctorId`, `date` y `time` estén presentes.
 - Validar formato de `date`: regex `^\d{4}-\d{2}-\d{2}$` y que sea una fecha real.
+- Validar que `date` **no sea anterior a hoy** (regla de negocio, `400`).
 - Validar formato de `time`: regex `^\d{2}:\d{2}$`.
 - Verificar que el doctor exista y tenga `role = 'doctor'`.
 - Crear la cita con `patient_id = req.user.id`.
 - Retornar 201 `{ appointment }` con nombres del paciente y doctor.
-- Errores: 400 si faltan campos o formatos inválidos; 404 si el doctor no existe.
+- Errores: 400 si faltan campos, formatos inválidos o fecha pasada; 404 si el doctor no existe.
+
+Las validaciones de fecha/hora viven en `backend/src/utils/validation.js`
+(`isValidDate`, `isFutureDate`, `isValidTime`) para poder testearlas por separado.
 
 **`listMyAppointments(req, res, next)`:**
 - Obtener todas las citas del usuario actual (`req.user.id`).
@@ -56,13 +60,14 @@ PATCH  /api/appointments/:id/reject    → reject              (solo doctor)
 | Campo | Formato | Ejemplo |
 |-------|---------|---------|
 | `doctorId` | integer, required | `1` |
-| `date` | `YYYY-MM-DD`, fecha real | `2024-03-15` |
+| `date` | `YYYY-MM-DD`, fecha real, **no pasada** | `2026-10-15` |
 | `time` | `HH:MM` | `14:30` |
 | `reason` | string, optional | `"Dolor de cabeza"` |
 
 ### Archivos a crear
 
 ```
+backend/src/utils/validation.js
 backend/src/routes/appointments.routes.js
 backend/src/controllers/appointments.controller.js
 ```
@@ -79,7 +84,7 @@ TOKEN_PATIENT=$(curl -s -X POST http://localhost:3001/api/auth/login \
 curl -X POST http://localhost:3001/api/appointments \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN_PATIENT" \
-  -d '{"doctorId":1,"date":"2024-03-15","time":"14:30","reason":"Dolor de cabeza"}'
+  -d '{"doctorId":1,"date":"2026-10-15","time":"14:30","reason":"Dolor de cabeza"}'
 
 # 3. Login como médico
 TOKEN_DOCTOR=$(curl -s -X POST http://localhost:3001/api/auth/login \

@@ -30,7 +30,7 @@ jobs:
         run: npm test
 
   frontend:
-    name: Frontend (build)
+    name: Frontend (tests + build)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout código
@@ -46,6 +46,10 @@ jobs:
       - name: Instalar dependencias
         working-directory: frontend
         run: npm ci
+
+      - name: Ejecutar tests
+        working-directory: frontend
+        run: npm test
 
       - name: Compilar proyecto
         working-directory: frontend

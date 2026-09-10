@@ -48,7 +48,8 @@ demoapp1/
 │   │   ├── services/      # Lógica de negocio
 │   │   ├── controllers/   # Handlers HTTP
 │   │   ├── middleware/     # Auth + error handling
-│   │   └── routes/        # Definición de endpoints
+│   │   ├── routes/        # Definición de endpoints
+│   │   └── utils/         # Validaciones (fecha/hora)
 │   └── tests/             # Vitest + Supertest
 ├── frontend/              # Vue 3 SPA
 │   ├── src/
