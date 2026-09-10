@@ -121,3 +121,10 @@ para demo), las contraseñas se almacenan con bcrypt, y los secretos van en `.en
 (no versionado). Para un entorno real con datos de pacientes, añade cifrado en
 tránsito, refresh tokens, control de acceso y cumplimiento de normativas
 locales de salud.
+
+## Licencia
+
+Todo el código de este proyecto se distribuye bajo la
+[GNU General Public License v3.0 o posterior](LICENSE) (GPL-3.0-or-later).
+
+Copyright (C) 2026 MedApp contributors

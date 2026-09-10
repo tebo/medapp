@@ -2,6 +2,7 @@
   "name": "medapp-frontend",
   "version": "1.0.0",
   "description": "Frontend Vue 3 para el sistema de citas médicas",
+  "license": "GPL-3.0-or-later",
   "type": "module",
   "scripts": {
     "dev": "vite",

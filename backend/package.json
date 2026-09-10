@@ -17,7 +17,7 @@
     "express",
     "sqlite"
   ],
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^13.0.3",
