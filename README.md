@@ -9,7 +9,7 @@ Aplicación **demo de una sola pieza** para aprender:
 Stack: **Vue 3 + Vite + Pinia** (frontend) · **Node.js + Express + SQLite** (backend) ·
 **Docker + GitHub Actions** (devops) · **Vitest / Supertest** (testing).
 
-Línea gráfica del frontend: **«Pulso clínico»** (teal + Fraunces/Figtree) —
+Línea gráfica del frontend: **«Oliva y miel»** (cálida, Fraunces/Figtree) —
 detalle en [docs/linea-grafica.md](docs/linea-grafica.md).
 
 ---

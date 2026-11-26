@@ -44,9 +44,9 @@ function dashboardLink() {
 
 <style scoped>
 .navbar {
-  background: rgb(20 42 40 / 0.92);
+  background: rgb(42 36 28 / 0.94);
   color: var(--white);
-  border-bottom: 1px solid rgb(26 155 142 / 0.35);
+  border-bottom: 1px solid rgb(196 146 58 / 0.4);
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
@@ -87,7 +87,7 @@ nav {
 }
 
 .nav-link {
-  color: #c5d9d4;
+  color: #e2d6c6;
   font-size: 0.92rem;
   font-weight: 500;
 }
@@ -102,17 +102,17 @@ nav {
 }
 
 .nav-user {
-  color: #a8c2bb;
+  color: #cbbfaf;
   font-size: 0.88rem;
 }
 
 .navbar .btn-outline {
-  color: #dff3ef;
-  border-color: rgb(215 236 235 / 0.45);
+  color: #f5e6c8;
+  border-color: rgb(245 230 200 / 0.45);
 }
 
 .navbar .btn-outline:hover {
-  background: rgb(215 236 235 / 0.12);
+  background: rgb(245 230 200 / 0.12);
   color: #fff;
 }
 

@@ -111,7 +111,7 @@ function goToDashboard() {
   display: flex;
   align-items: flex-end;
   background:
-    linear-gradient(120deg, #0a4f52 0%, #0d7377 48%, #1a9b8e 100%);
+    linear-gradient(125deg, #2a4536 0%, #3f6b52 46%, #6a8554 78%, #b8893c 115%);
   color: #fff;
 }
 
@@ -196,7 +196,7 @@ function goToDashboard() {
 }
 
 .hero .btn:not(.btn-outline):hover {
-  background: #e8f6f4;
+  background: #f5e6c8;
 }
 
 .below {

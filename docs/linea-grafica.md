@@ -1,19 +1,20 @@
-# Línea gráfica MedApp — «Pulso clínico»
+# Línea gráfica MedApp — «Oliva y miel»
 
-Identidad visual del frontend para demos de clase. Objetivo: que MedApp se
-reconozca al instante y no parezca un template genérico azul/gris.
+Identidad visual cálida del frontend para demos de clase. Objetivo: que MedApp
+se sienta humana y cercana, sin caer en el look genérico cream + terracota.
 
 ## Principios
 
 | Elemento | Decisión |
 |----------|----------|
-| Color primario | Teal `#0D7377` (clínico, no “hospital blue”) |
+| Color primario | Oliva `#3F6B52` |
+| Acento | Miel / ámbar `#C4923A` (no terracota) |
 | Tipografía display | **Fraunces** — marca y títulos |
 | Tipografía UI | **Figtree** — formularios, nav, cuerpo |
 | Marca | Wordmark **MedApp** + monograma con trazo de pulso (SVG) |
-| Atmósfera | Gradiente mist + trama de líneas diagonales |
-| Superficies | Paneles translúcidos con borde jade, sin sombras pesadas |
-| Estados | Badges con radio suave (no píldoras full) + borde izquierdo en tarjetas |
+| Atmósfera | Arena cálida + lavado melocotón + trama diagonal suave |
+| Superficies | Paneles marfil translúcidos, borde piedra |
+| Estados | Badges con radio suave + borde izquierdo en tarjetas |
 
 ## Dónde vive
 
@@ -24,6 +25,6 @@ reconozca al instante y no parezca un template genérico azul/gris.
 
 ## Prompt útil para iterar en clase
 
-> «Mantén la línea gráfica Pulso clínico de MedApp (teal, Fraunces/Figtree,
-> BrandMark). Al añadir UI nueva, reutiliza tokens CSS existentes; no introduzcas
-> Inter, púrpura ni sombras multilayers.»
+> «Mantén la línea gráfica Oliva y miel de MedApp (oliva `#3F6B52`, acento miel
+> `#C4923A`, Fraunces/Figtree, BrandMark). Al añadir UI nueva, reutiliza tokens
+> CSS existentes; no introduzcas Inter, púrpura, terracota ni sombras multilayers.»
