@@ -48,7 +48,7 @@ Para cada feature: prompt → revisión → ajuste (1-3 iteraciones) → siguien
 No avances a la siguiente feature sin verificar la anterior:
 
 ```bash
-npm test          # backend: 73 tests (auth + citas + médicos + unitarias)
+npm test          # backend: 79 tests (auth + citas + use cases + unitarias)
 npm test          # frontend: 41 tests (store, router, componentes y API)
 npm run build     # frontend: build de producción
 ```
@@ -88,7 +88,7 @@ La IA acelera la documentación, pero tú verificas que los comandos funcionen
    refactor de validaciones a `utils/` con la regla "fecha no pasada".
 4. **Iteración frontend:** api.js + store → router → vistas → componentes.
 5. **Línea gráfica:** tokens Oliva y miel + BrandMark + hero de marca.
-6. **Verificación:** 114 tests en total (73 backend + 41 frontend), build Vite
+6. **Verificación:** 120 tests en total (79 backend + 41 frontend), build Vite
    OK, arranque de API OK.
 7. **Documentación:** esta guía, prompts y el README, siempre verificando comandos.
 

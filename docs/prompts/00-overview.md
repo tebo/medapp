@@ -41,14 +41,15 @@ demoapp1/
 ├── .github/workflows/     # CI y Docker build
 ├── docs/                  # API, setup, guía IA, línea gráfica, prompts
 ├── docker/                # Dockerfiles y nginx.conf
-├── backend/               # Express API
+├── backend/               # Express API (layered + application use cases)
 │   ├── src/
 │   │   ├── config.js
 │   │   ├── app.js
+│   │   ├── application/   # Use cases (citas: create/cancel/status/list)
 │   │   ├── db/            # Conexión, migraciones, seed
 │   │   ├── models/        # SQL prepared statements
-│   │   ├── services/      # Lógica de negocio
-│   │   ├── controllers/   # Handlers HTTP
+│   │   ├── services/      # Helpers (p. ej. users)
+│   │   ├── controllers/   # Handlers HTTP delgados
 │   │   ├── middleware/     # Auth + error handling
 │   │   ├── routes/        # Definición de endpoints
 │   │   └── utils/         # Validaciones (fecha/hora)
@@ -97,3 +98,4 @@ demoapp1/
 | 14 | Guía de IA | `14-guia-ia.md` |
 | 15 | Cancelar + anti-solape + filtro | `15-cancel-overlap-filter.md` |
 | 16 | Línea gráfica Oliva y miel | `16-linea-grafica.md` |
+| 17 | Capas limpias + use case Cancel | `17-clean-layers-usecase.md` |
