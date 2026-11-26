@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
+import BrandMark from '../components/BrandMark.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -31,7 +32,11 @@ async function onSubmit() {
 
 <template>
   <div class="container auth-wrap">
-    <form class="card auth-card" @submit.prevent="onSubmit">
+    <form class="auth-card" @submit.prevent="onSubmit">
+      <div class="auth-brand">
+        <BrandMark />
+        <span class="brand-wordmark">MedApp</span>
+      </div>
       <h1>Iniciar sesión</h1>
       <p class="text-muted mb-2">Accede como paciente o médico</p>
 
@@ -59,7 +64,35 @@ async function onSubmit() {
 </template>
 
 <style scoped>
-.auth-wrap { display: flex; justify-content: center; padding-top: 3rem; }
-.auth-card { max-width: 400px; width: 100%; }
-.auth-card h1 { font-size: 1.4rem; margin-bottom: 0.25rem; }
+.auth-wrap {
+  display: flex;
+  justify-content: center;
+  padding-top: 2.5rem;
+}
+
+.auth-card {
+  max-width: 420px;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem 1.5rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.auth-brand .brand-wordmark {
+  font-size: 1.4rem;
+}
+
+.auth-card h1 {
+  font-size: 1.55rem;
+  margin-bottom: 0.25rem;
+}
 </style>

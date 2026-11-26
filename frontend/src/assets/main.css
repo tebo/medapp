@@ -1,19 +1,39 @@
 :root {
-  --primary: #2563eb;
-  --primary-dark: #1d4ed8;
-  --success: #16a34a;
-  --danger: #dc2626;
-  --warning: #d97706;
-  --gray-50: #f9fafb;
-  --gray-100: #f3f4f6;
-  --gray-200: #e5e7eb;
-  --gray-300: #d1d5db;
-  --gray-600: #4b5563;
-  --gray-700: #374151;
-  --gray-800: #1f2937;
+  /* Línea gráfica MedApp — "Oliva y miel" (cálida) */
+  --ink: #2a241c;
+  --ink-soft: #5a4e42;
+  --muted: #7a6e62;
+  --primary: #3f6b52;
+  --primary-dark: #2f5240;
+  --primary-soft: #e4ede6;
+  --accent-line: #c4923a;
+  --accent-soft: #f5e6c8;
+  --surface: rgba(255, 252, 247, 0.9);
+  --surface-solid: #fffaf4;
+  --border: #d9cfc2;
+  --success: #2f6b45;
+  --success-soft: #e3f0e7;
+  --danger: #b42318;
+  --danger-soft: #fde8e6;
+  --warning: #9a6700;
+  --warning-soft: #fff3d6;
+  --radius: 0.65rem;
+  --radius-sm: 0.4rem;
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-body: "Figtree", "Segoe UI", sans-serif;
+  --shadow-soft: 0 1px 0 rgb(42 36 28 / 0.06);
+  --max-w: 1040px;
+
+  /* aliases usados por vistas existentes */
+  --gray-50: #f7f2ea;
+  --gray-100: #efe8de;
+  --gray-200: #e0d6c8;
+  --gray-300: #cbbfaf;
+  --gray-600: var(--muted);
+  --gray-700: var(--ink-soft);
+  --gray-800: var(--ink);
   --white: #ffffff;
-  --radius: 0.5rem;
-  --shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+  --shadow: var(--shadow-soft);
 }
 
 * {
@@ -22,67 +42,120 @@
   box-sizing: border-box;
 }
 
+html,
 body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  background: var(--gray-100);
-  color: var(--gray-800);
-  line-height: 1.5;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  line-height: 1.55;
+  background:
+    radial-gradient(ellipse 70% 45% at 8% -8%, rgb(232 176 110 / 0.28), transparent 55%),
+    radial-gradient(ellipse 55% 40% at 100% 0%, rgb(63 107 82 / 0.14), transparent 50%),
+    linear-gradient(165deg, #f8efe4 0%, #f3ebe2 45%, #efe6d8 100%);
+  background-attachment: fixed;
+}
+
+/* Patrón gráfico: trama cálida diagonal */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+  background-image:
+    repeating-linear-gradient(
+      -18deg,
+      transparent 0,
+      transparent 11px,
+      rgb(42 36 28 / 0.035) 11px,
+      rgb(42 36 28 / 0.035) 12px
+    );
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
 }
 
 a {
-  color: var(--primary);
+  color: var(--primary-dark);
   text-decoration: none;
+  font-weight: 600;
 }
 
 a:hover {
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .container {
-  max-width: 960px;
+  max-width: var(--max-w);
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: 1.5rem 1.25rem 2.5rem;
+}
+
+h1,
+h2,
+h3,
+.page-title,
+.brand-wordmark {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--ink);
 }
 
 .card {
-  background: var(--white);
-  border: 1px solid var(--gray-200);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.25rem;
-  box-shadow: var(--shadow);
+  padding: 1.25rem 1.35rem;
+  box-shadow: var(--shadow-soft);
   margin-bottom: 1rem;
+  backdrop-filter: blur(8px);
 }
 
 .btn {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: var(--radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.15rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
   background: var(--primary);
   color: var(--white);
+  font-family: var(--font-body);
   font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .btn:hover {
   background: var(--primary-dark);
+  text-decoration: none;
 }
 
 .btn:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
 .btn-outline {
   background: transparent;
-  color: var(--primary);
-  border: 1px solid var(--primary);
+  color: var(--primary-dark);
+  border-color: var(--primary);
 }
 
 .btn-outline:hover {
-  background: var(--primary);
-  color: var(--white);
+  background: var(--primary-soft);
+  color: var(--primary-dark);
 }
 
 .btn-success {
@@ -90,7 +163,7 @@ a:hover {
 }
 
 .btn-success:hover {
-  filter: brightness(0.9);
+  background: #186640;
 }
 
 .btn-danger {
@@ -98,7 +171,12 @@ a:hover {
 }
 
 .btn-danger:hover {
-  filter: brightness(0.9);
+  background: #912018;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
 }
 
 .form-group {
@@ -107,53 +185,103 @@ a:hover {
 
 .form-group label {
   display: block;
-  margin-bottom: 0.25rem;
-  font-weight: 500;
-  color: var(--gray-700);
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
 }
 
 .form-control {
   width: 100%;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--gray-300);
-  border-radius: var(--radius);
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   font-size: 1rem;
+  font-family: var(--font-body);
+  background: #fff;
+  color: var(--ink);
 }
 
 .form-control:focus {
-  outline: 2px solid var(--primary);
-  border-color: transparent;
+  outline: 2px solid rgb(63 107 82 / 0.35);
+  border-color: var(--primary);
 }
 
 .badge {
   display: inline-block;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
-.badge-pending { background: #fef3c7; color: var(--warning); }
-.badge-confirmed { background: #dcfce7; color: var(--success); }
-.badge-rejected { background: #fee2e2; color: var(--danger); }
-.badge-cancelled { background: var(--gray-200); color: var(--gray-600); }
+.badge-pending { background: var(--warning-soft); color: var(--warning); }
+.badge-confirmed { background: var(--success-soft); color: var(--success); }
+.badge-rejected { background: var(--danger-soft); color: var(--danger); }
+.badge-cancelled { background: var(--gray-100); color: var(--muted); }
 
 .alert-error {
-  background: #fee2e2;
+  background: var(--danger-soft);
   color: var(--danger);
-  padding: 0.75rem;
-  border-radius: var(--radius);
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgb(180 35 24 / 0.2);
+  margin-bottom: 1rem;
+}
+
+.alert-success {
+  background: var(--success-soft);
+  color: var(--success);
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgb(31 122 76 / 0.2);
   margin-bottom: 1rem;
 }
 
 .grid-2 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
-.text-muted { color: var(--gray-600); }
+.text-muted { color: var(--muted); }
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
 .mb-1 { margin-bottom: 0.5rem; }
 .mb-2 { margin-bottom: 1rem; }
+
+code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* Marca gráfica reutilizable */
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.45rem;
+  background: var(--primary);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.brand-mark svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem 1rem 2rem;
+  }
+}

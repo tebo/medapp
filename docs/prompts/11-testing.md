@@ -79,9 +79,10 @@ En total el backend suma **67 tests**.
 - **`api.test.js`**: interceptor añade `Authorization: Bearer` con token, lo omite
   sin token y limpia el token ante un `401`.
 - **`AppointmentCard.test.js`**: etiquetas de estado traducidas, formato de fecha,
-  emisión de `confirm`/`reject` y acciones visibles solo en pendientes.
+  emisión de `confirm`/`reject`/`cancel` y acciones visibles según props.
+- **`StatusFilter.test.js`**: chip activo, `v-model` y opciones personalizadas.
 
-En total el frontend suma **35 tests**.
+En total el frontend suma **41 tests**.
 
 ### Configuración Frontend
 

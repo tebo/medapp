@@ -1,9 +1,10 @@
-# Prompt: Documentación — API, Setup y Guía de IA
+# Prompt: Documentación — API, Setup, CSS y línea gráfica
 
 ## Contexto
 
 MedApp necesita documentación clara para desarrolladores que quieran entender
-el proyecto, instalarlo, y usar la guía de IA integrada.
+el proyecto, instalarlo, y usar la guía de IA integrada. El frontend sigue la
+línea gráfica **«Oliva y miel»** (ver `docs/linea-grafica.md`).
 
 ## Tarea
 
@@ -26,13 +27,15 @@ Documentar cada endpoint con:
 | POST | `/api/auth/login` | Público | Login |
 | GET | `/api/auth/me` | Autenticado | Datos del usuario actual |
 | GET | `/api/doctors` | Autenticado | Listar médicos |
-| POST | `/api/appointments` | patient | Crear cita |
+| POST | `/api/appointments` | patient | Crear cita (`409` si hay solape) |
 | GET | `/api/appointments/mine` | Autenticado | Mis citas |
 | GET | `/api/appointments/pending` | doctor | Citas pendientes |
 | PATCH | `/api/appointments/:id/confirm` | doctor | Confirmar cita |
 | PATCH | `/api/appointments/:id/reject` | doctor | Rechazar cita |
+| PATCH | `/api/appointments/:id/cancel` | patient | Cancelar cita propia |
 
-Incluir tabla de estados de cita con sus transiciones.
+Incluir tabla de estados de cita con sus transiciones
+(`pending` → `confirmed`/`rejected`/`cancelled`; `confirmed` → `cancelled`).
 
 ### 2. Documentación de Setup (`docs/setup.md`)
 
@@ -47,46 +50,52 @@ Estructura:
 4. **Docker**: `docker compose up --build`.
 5. **Tests**: `cd backend && npm test`, `cd frontend && npm test`.
 6. **Rutas de la app**: tabla con rutas de frontend y qué muestran.
-7. **Guía paso a paso de prueba**: 5 pasos para probar el flujo completo (login, crear cita, confirmar).
+7. **Guía paso a paso de prueba**: 5 pasos para probar el flujo completo (login, crear cita, confirmar, cancelar).
+8. Enlace a la línea gráfica: `docs/linea-grafica.md`.
 
 ### 3. CSS Styles (`frontend/src/assets/main.css`)
 
-Crear archivo de estilos globales con variables CSS:
+Crear estilos globales alineados a **«Oliva y miel»** (no uses azul `#2563eb`
+ni grises fríos de Tailwind por defecto):
 
 ```css
 :root {
-  --primary: #2563eb;
-  --primary-dark: #1d4ed8;
-  --success: #16a34a;
-  --danger: #dc2626;
-  --warning: #f59e0b;
-  --gray-50: #f9fafb;
-  --gray-100: #f3f4f6;
-  --gray-200: #e5e7eb;
-  --gray-300: #d1d5db;
-  --gray-500: #6b7280;
-  --gray-700: #374151;
-  --gray-900: #111827;
-  --radius: 8px;
-  --shadow: 0 1px 3px rgba(0,0,0,0.1);
+  --ink: #2a241c;
+  --ink-soft: #5a4e42;
+  --muted: #7a6e62;
+  --primary: #3f6b52;
+  --primary-dark: #2f5240;
+  --primary-soft: #e4ede6;
+  --accent-line: #c4923a;
+  --accent-soft: #f5e6c8;
+  --surface: rgba(255, 252, 247, 0.9);
+  --border: #d9cfc2;
+  --success: #2f6b45;
+  --danger: #b42318;
+  --warning: #9a6700;
+  --radius: 0.65rem;
+  --radius-sm: 0.4rem;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Figtree", "Segoe UI", sans-serif;
 }
 ```
 
-Clases reutilizables:
-- `.container` — max-width centered.
-- `.card` — fondo blanco, border-radius, shadow, padding.
-- `.btn`, `.btn-primary`, `.btn-outline`, `.btn-success`, `.btn-danger`.
-- `.form-group`, `.form-control`.
-- `.badge`, `.badge-pending`, `.badge-confirmed`, `.badge-rejected`, `.badge-cancelled`.
-- `.alert-error`.
-- `.grid-2` — grid de 2 columnas responsive.
+También:
+- Fuentes en `frontend/index.html` (Google Fonts: Fraunces + Figtree).
+- Atmósfera: fondo arena/melocotón + trama diagonal (no `background: #f3f4f6` plano).
+- Clases reutilizables: `.container`, `.card`, `.btn`, `.btn-outline`,
+  `.btn-success`, `.btn-danger`, `.form-group`, `.form-control`, `.badge-*`,
+  `.alert-error`, `.alert-success`, `.grid-2`, `.brand-mark`.
+- Documentar la identidad en `docs/linea-grafica.md`.
 
-### Archivos a crear
+### Archivos a crear / actualizar
 
 ```
 docs/
 ├── api.md
 ├── setup.md
+├── linea-grafica.md
+frontend/index.html
 frontend/src/assets/
 └── main.css
 ```

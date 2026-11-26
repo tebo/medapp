@@ -117,23 +117,34 @@ onMounted(loadData)
 </template>
 
 <style scoped>
-.page-title { font-size: 1.5rem; margin-top: 1rem; }
+.page-title {
+  font-size: clamp(1.6rem, 3vw, 2rem);
+  margin-top: 0.5rem;
+  margin-bottom: 0.35rem;
+}
 .grid-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
+  gap: 0.85rem;
 }
 @media (max-width: 720px) {
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
-.stat-card { text-align: center; }
-.stat-card strong { display: block; font-size: 1.75rem; color: var(--primary); }
-.stat-card span { color: var(--gray-600); font-size: 0.9rem; }
-.alert-success {
-  background: #dcfce7;
-  color: var(--success);
-  padding: 0.75rem;
-  border-radius: var(--radius);
-  margin-bottom: 1rem;
+.stat-card {
+  text-align: center;
+  background: var(--surface);
+  border-color: var(--border);
+}
+.stat-card strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  color: var(--primary);
+  line-height: 1.1;
+}
+.stat-card span {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 </style>

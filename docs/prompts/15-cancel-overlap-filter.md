@@ -16,6 +16,8 @@ Prompt usado (o reutilizable) para el ciclo de features de agenda:
 >
 > Añade tests backend y frontend, actualiza `docs/api.md` y el README. No cambies
 > el esquema SQLite (el CHECK de `cancelled` ya existe).
+> Respeta la línea gráfica **Oliva y miel** (tokens existentes, Fraunces/Figtree,
+> sin Inter ni azul genérico).
 
 ## Archivos tocados (referencia)
 

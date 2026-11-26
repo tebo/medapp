@@ -29,3 +29,6 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
+
+# Datos locales del backend (SQLite en runtime)
+backend/data/

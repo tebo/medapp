@@ -42,9 +42,10 @@ Repite contigo mismo: **todo lo que genera una IA es un borrador que hay que rev
 En este proyecto aplicamos esa ley:
 
 1. Cada módulo se escribió con prompts (capítulo 4) y después se revisó a mano.
-2. El backend tiene **67 tests** con **Vitest + Supertest** (auth, citas, médicos y
-   unitarias) y el frontend **35 tests** (store, router, componentes y API).
+2. El backend tiene **73 tests** con **Vitest + Supertest** (auth, citas, médicos y
+   unitarias) y el frontend **41 tests** (store, router, componentes y API).
 3. Docker y CI/CD verifican tests y build en cada cambio.
+4. La UI sigue la línea gráfica **Oliva y miel** (`docs/linea-grafica.md`).
 
 ## Ejercicio rápido
 

@@ -1,6 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import BrandMark from './BrandMark.vue'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -19,7 +20,8 @@ function dashboardLink() {
   <header class="navbar">
     <div class="container navbar-inner">
       <router-link :to="{ name: 'home' }" class="brand">
-        <span class="brand-icon">🩺</span> MedApp
+        <BrandMark />
+        <span class="brand-wordmark">MedApp</span>
       </router-link>
 
       <nav>
@@ -42,8 +44,13 @@ function dashboardLink() {
 
 <style scoped>
 .navbar {
-  background: var(--gray-800);
+  background: rgb(42 36 28 / 0.94);
   color: var(--white);
+  border-bottom: 1px solid rgb(196 146 58 / 0.4);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 
 .navbar-inner {
@@ -51,25 +58,38 @@ function dashboardLink() {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  padding-top: 0.85rem;
+  padding-bottom: 0.85rem;
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   color: var(--white);
-  font-size: 1.25rem;
-  font-weight: 700;
+  text-decoration: none;
 }
 
 .brand:hover { text-decoration: none; }
 
+.brand-wordmark {
+  color: var(--white);
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
 nav {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  justify-content: flex-end;
 }
 
 .nav-link {
-  color: var(--gray-300);
-  font-size: 0.95rem;
+  color: #e2d6c6;
+  font-size: 0.92rem;
+  font-weight: 500;
 }
 
 .nav-link:hover {
@@ -81,7 +101,22 @@ nav {
   color: var(--white);
 }
 
-.nav-user { color: var(--gray-300); font-size: 0.9rem; }
+.nav-user {
+  color: #cbbfaf;
+  font-size: 0.88rem;
+}
 
-.btn-sm { padding: 0.35rem 0.75rem; font-size: 0.85rem; }
+.navbar .btn-outline {
+  color: #f5e6c8;
+  border-color: rgb(245 230 200 / 0.45);
+}
+
+.navbar .btn-outline:hover {
+  background: rgb(245 230 200 / 0.12);
+  color: #fff;
+}
+
+@media (max-width: 640px) {
+  .nav-user { display: none; }
+}
 </style>

@@ -53,6 +53,8 @@ npm test          # frontend: 41 tests (store, router, componentes y API)
 npm run build     # frontend: build de producción
 ```
 
+Al tocar UI, pide explícitamente: «respeta Oliva y miel (`docs/linea-grafica.md`)».
+
 Si algo falla, pide a la IA que corrija *solo eso* aportando el trace.
 
 ## Fase 5 · Documenta
@@ -85,9 +87,10 @@ La IA acelera la documentación, pero tú verificas que los comandos funcionen
 3. **Iteración backend:** auth → médicos → citas → flags de rol → tests →
    refactor de validaciones a `utils/` con la regla "fecha no pasada".
 4. **Iteración frontend:** api.js + store → router → vistas → componentes.
-5. **Verificación:** 102 tests en total (67 backend + 35 frontend), build Vite
+5. **Línea gráfica:** tokens Oliva y miel + BrandMark + hero de marca.
+6. **Verificación:** 114 tests en total (73 backend + 41 frontend), build Vite
    OK, arranque de API OK.
-6. **Documentación:** esta guía y el README, siempre verificando comandos.
+7. **Documentación:** esta guía, prompts y el README, siempre verificando comandos.
 
 ## Tu propia práctica guiada
 
