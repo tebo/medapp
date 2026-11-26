@@ -1,10 +1,13 @@
-# Prompt: CI/CD — GitHub Actions
+# Prompt: CI/CD — GitHub Actions (+ seguridad)
 
 ## Contexto
 
 MedApp necesita pipelines de CI/CD con GitHub Actions para:
 1. Ejecutar tests y build en cada push/PR.
-2. Publicar imágenes Docker en GitHub Container Registry (GHCR).
+2. Ejecutar **pruebas de seguridad** (dependencias, secretos, filesystem).
+3. Publicar imágenes Docker en GHCR **después** de escanearlas.
+
+Detalle del plan: `docs/plan-seguridad.md`. Prompt hermano: `18-security-pipeline.md`.
 
 ## Tarea
 
@@ -15,48 +18,47 @@ MedApp necesita pipelines de CI/CD con GitHub Actions para:
 **Jobs paralelos en `ubuntu-latest`:**
 
 **Job `backend`:**
-- Checkout del código.
-- Setup Node.js 22 con cache de npm.
-- `npm ci` en directorio `backend/`.
-- `npm test` en directorio `backend/`.
+- Checkout, Node 22, `npm ci`, `npm test` en `backend/`.
 
 **Job `frontend`:**
-- Checkout del código.
-- Setup Node.js 22 con cache de npm.
-- `npm ci` en directorio `frontend/`.
-- `npm test` en directorio `frontend/` (tests de store, router, componentes y API).
-- `npm run build` en directorio `frontend/` (verifica que el build funcione).
+- Checkout, Node 22, `npm ci`, `npm test`, `npm run build` en `frontend/`.
 
-### 2. Workflow de Docker (`.github/workflows/docker.yml`)
+### 2. Workflow de Security (`.github/workflows/security.yml`)
+
+**Trigger:** push y PR a `main`.
+
+**Jobs:**
+- `dependency-audit` — `npm audit --omit=dev --audit-level=high` en backend y
+  frontend. Fase A: `continue-on-error: true` (reporte). Fase B: quitarlo.
+- `secrets-scan` — Gitleaks Action (falla si hay secretos).
+- `trivy-fs` — Trivy scan tipo `fs` severidad CRITICAL,HIGH (Fase A: exit 0).
+
+### 3. Workflow de Docker (`.github/workflows/docker.yml`)
 
 **Trigger:** push a `main` y tags `v*`.
 
 **Permissions:** `contents: read`, `packages: write`.
 
-**Job único:**
-1. Checkout con `actions/checkout@v4`.
-2. Login a GHCR con `docker/login-action@v3` usando `secrets.GITHUB_TOKEN`.
-3. Generar metadata con `docker/metadata-action@v5` para:
-   - Backend: `ghcr.io/${{ github.repository }}-backend`
-   - Frontend: `ghcr.io/${{ github.repository }}-frontend`
-4. Build y push con `docker/build-push-action@v6` para ambos:
-   - Backend: file `docker/Dockerfile.backend`, context `.`
-   - Frontend: file `docker/Dockerfile.frontend`, context `.`
+**Flujo por imagen (backend y frontend):**
+1. Login GHCR.
+2. Metadata tags.
+3. Build local (`push: false`, `load: true`, tag `:scan`).
+4. Trivy image scan (CRITICAL/HIGH; Fase A exit 0).
+5. Build/push a GHCR con tags finales.
 
-**Tags generados:**
-- En `main`: `latest`.
-- En tags `v*`: versión extraída del tag (ej: `v1.0.0` → `1.0.0`, `latest`).
-
-### Archivos a crear
+### Archivos
 
 ```
 .github/workflows/
 ├── ci.yml
+├── security.yml
 └── docker.yml
+docs/
+├── plan-seguridad.md
+└── prompts/18-security-pipeline.md
 ```
 
-### Notas
+### Notas para clase
 
-- Las imágenes se publican en `ghcr.io/<usuario>/<repo>-backend` y `ghcr.io/<usuario>/<repo>-frontend`.
-- El token `GITHUB_TOKEN` se proporciona automáticamente.
-- No se necesitan secrets adicionales para CI básico.
+- Fase A = **ver** hallazgos; Fase B = **bloquear** merges inseguros.
+- No confundir `npm audit` (deps) con tests de autorización (Supertest S01–S06).

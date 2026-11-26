@@ -93,6 +93,8 @@ Patrones visibles hoy: **Layered**, **MVC-ish (API)**, **Middleware**,
 | D4 | A11y en CI | Calidad continua | Quality gate |
 | D5 | Changelog por PR | Comunicación | Release notes pipeline |
 | D6 | Demo reset admin | Operaciones | Admin capability / kill switch |
+| D7 | Plan + pipeline de seguridad | DevSecOps en clase | `docs/plan-seguridad.md` + `security.yml` ✅ Fase A |
+| D8 | Security gates (Fase B) | Bloquear CVE critical en CI | Quitar continue-on-error + fix deps |
 
 ### E · Extras “wow”
 
@@ -163,6 +165,7 @@ Diagrama pedagógico sugerido (hexagonal mínimo):
 4. **Calidad visible** — D1 seed + D3 E2E.
 5. **Observabilidad** — C5 auditoría + UI historial.
 6. **Admin** — E3 métricas + rol `admin`.
+6b. **DevSecOps** — D7 plan de seguridad + pipeline (Fase A ✅) → D8 gates.
 
 ### Arquitectura
 7. **Capas limpias** — F1 + F3 (controller delgado + use case Cancel). ✅ `application/appointments` + prompt 17.

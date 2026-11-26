@@ -99,3 +99,4 @@ demoapp1/
 | 15 | Cancelar + anti-solape + filtro | `15-cancel-overlap-filter.md` |
 | 16 | Línea gráfica Oliva y miel | `16-linea-grafica.md` |
 | 17 | Capas limpias + use case Cancel | `17-clean-layers-usecase.md` |
+| 18 | Plan de seguridad + pipeline | `18-security-pipeline.md` |

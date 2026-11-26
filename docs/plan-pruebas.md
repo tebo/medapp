@@ -28,15 +28,17 @@ funciona de extremo a extremo con control de acceso por rol.
   confirmación y rechazo (médico), estados y validaciones.
 - **Frontend**: envistas de Home, Login, Register, dashboards de paciente y doctor,
   guía de IA; store de autenticación (Pinia) y protección de rutas por rol.
-- **Devops**: pipeline CI (tests y build) e integración Docker.
+- **Devops**: pipeline CI (tests y build), seguridad (audit/secretos/Trivy) e
+  integración Docker.
 - **Comportamiento de la API**: códigos HTTP, formato de respuestas y errores.
+- **Seguridad (Fase A)**: ver [plan-seguridad.md](./plan-seguridad.md).
 
 ### Fuera del alcance
 
 - Pruebas de rendimiento/estrés a escala (aplicación educativa con SQLite).
-- Auditoría de seguridad completa (pen-testing, cumplimiento de normativas de salud).
+- Pen-testing exhaustivo y cumplimiento de normativas de salud (HIPAA/RGPD clínico).
 - Compatibilidad con múltiples navegadores antiguos (validado en navegadores modernos).
-- Funcionalidad de cancelación de citas (reservada para una futura versión).
+- Quality gates duros de CVE (Fase B del plan de seguridad).
 
 ## 3. Componentes bajo prueba
 
@@ -52,7 +54,7 @@ funciona de extremo a extremo con control de acceso por rol.
 | Componentes | `frontend/src/components` | `AppointmentCard.vue` · `NavBar.vue` |
 | Composable/Servicio | `frontend/src` | `composables/useAuth.js` · `services/api.js` |
 | Utilidades | `backend/src/utils` | `validation.js` (fecha/hora) |
-| DevOps | `.github/workflows` | `ci.yml` (tests + build) · `docker.yml` (imágenes GHCR) |
+| DevOps | `.github/workflows` | `ci.yml` · `security.yml` · `docker.yml` (GHCR + Trivy) |
 
 ## 4. Estrategia de pruebas
 
@@ -225,10 +227,11 @@ críticos/mayores bloquean el criterio de salida de la iteración.
 
 ## 11. Integración con CI/CD
 
-- `.github/workflows/ci.yml`: ejecuta `npm test` (backend y frontend) y `npm run
-  build` (frontend) en cada push/PR a `main`. **Un fallo bloquea el merge.**
-- `.github/workflows/docker.yml`: publica imágenes en GHCR desde `main` y tags `v*`.
-- Recomendado: añadir job de E2E con Playwright al pipeline.
+- `.github/workflows/ci.yml`: `npm test` (backend/frontend) + build. **Fallo bloquea merge.**
+- `.github/workflows/security.yml`: audit npm (prod), Gitleaks, Trivy FS
+  (Fase A: audit/trivy en modo reporte; Gitleaks sí bloquea).
+- `.github/workflows/docker.yml`: build → Trivy imagen → push GHCR.
+- Recomendado: E2E Playwright + Fase B (gates de CVE) — ver plan de seguridad.
 
 ## 12. Riesgos y mitigación
 

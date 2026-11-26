@@ -1,0 +1,76 @@
+name: Security
+
+# Plan de seguridad Fase A: visibilidad en cada PR/push.
+# Ver docs/plan-seguridad.md — Fase B convertirá audit en quality gate.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  dependency-audit:
+    name: npm audit (producción)
+    runs-on: ubuntu-latest
+    # Fase A: no bloquea el merge; Fase B: quitar continue-on-error tras fixes.
+    continue-on-error: true
+    strategy:
+      matrix:
+        package: [backend, frontend]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ${{ matrix.package }}/package-lock.json
+
+      - name: Instalar dependencias
+        working-directory: ${{ matrix.package }}
+        run: npm ci
+
+      - name: Auditar dependencias de producción
+        working-directory: ${{ matrix.package }}
+        run: |
+          echo "::group::npm audit --omit=dev (${{ matrix.package }})"
+          npm audit --omit=dev --audit-level=high
+          echo "::endgroup::"
+
+  secrets-scan:
+    name: Gitleaks (secretos)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Escanear secretos
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  trivy-fs:
+    name: Trivy (filesystem)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Scan filesystem
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: CRITICAL,HIGH
+          exit-code: '0'
+          format: table
+          ignore-unfixed: true
