@@ -109,13 +109,24 @@ y anti-solapamiento).
 ## 4.11 Prompt → Vistas del paciente y del médico
 
 > «Crea dos vistas Vue 3. Una de paciente: formulario para pedir cita (select de
-> médicos y fecha/hora/motivo) y lista de sus citas con badge de estado. Una de
-> médico: listado de solicitudes pendientes con botones Confirmar/Rechazar y un
-> contador de pendientes/confirmadas/rechazadas. Usa <script setup>.»
+> médicos y fecha/hora/motivo) y lista de sus citas con badge de estado y filtro.
+> Una de médico: listado de solicitudes pendientes con botones Confirmar/Rechazar
+> y un contador de pendientes/confirmadas/rechazadas/canceladas. Usa <script setup>
+> y respeta la línea gráfica Oliva y miel.»
 
 **Resultado:** `frontend/src/views/DashboardPatient.vue` y `DashboardDoctor.vue`.
 
-## 4.12 Prompt → Refactor de validaciones y regla de negocio
+## 4.12 Prompt → Línea gráfica del frontend
+
+> «Define la identidad visual Oliva y miel de MedApp: tokens CSS (oliva #3F6B52,
+> miel #C4923A), Fraunces + Figtree, BrandMark con pulso SVG, hero de marca a
+> sangre en Home, y documenta todo en docs/linea-grafica.md. No uses Inter,
+> púrpura ni terracota como acento.»
+
+**Resultado:** `frontend/src/assets/main.css`, `BrandMark.vue`, `HomeView.vue`,
+`docs/linea-grafica.md` y el prompt reutilizable `docs/prompts/16-linea-grafica.md`.
+
+## 4.13 Prompt → Refactor de validaciones y regla de negocio
 
 > «Mueve la validación de fecha y hora del controlador de citas a un módulo
 > backend/src/utils/validation.js con funciones isValidDate, isValidTime e

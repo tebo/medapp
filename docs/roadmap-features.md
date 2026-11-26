@@ -68,4 +68,7 @@ Prompt plantilla:
 
 > «En MedApp (Vue 3 + Express + SQLite), implementa solo `<feature>`.
 > Respeta roles JWT, añade tests Vitest/Supertest y actualiza `docs/api.md`.
+> Si tocas UI, mantén la línea gráfica Oliva y miel (`docs/linea-grafica.md`).
 > No refactorices lo que no haga falta.»
+
+Prompt de identidad visual: `docs/prompts/16-linea-grafica.md`.

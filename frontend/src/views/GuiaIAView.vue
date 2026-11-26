@@ -42,7 +42,8 @@ const chapters = [
     content: [
       { h: 'Prompt → Modelo SQLite', t: '«Dado este proyecto de citas (link al repositorio), genera el SQL de la tabla appointments con paciente_id y doctor_id como claves foráneas, status con CHECK pending/confirmed/rejected/cancelled, y timestamps con datetime("now").»' },
       { h: 'Prompt → Endpoint JWT', t: '«Añade un endpoint PATCH /api/appointments/:id/confirm que solo permita a un médico (rol doctor) confirmar una cita pendiente asignada a él. Usa middleware authenticate y authorize.»' },
-      { h: 'Prompt → Componente Vue', t: '«Crea un componente Vue 3 con composition API <script setup> que muestre las citas del usuario: tarjeta con fecha, hora, médico y un badge de estado. Estilos scoped simples con clases banner.»' },
+      { h: 'Prompt → Componente Vue', t: '«Crea un componente Vue 3 con composition API <script setup> que muestre las citas del usuario: tarjeta con fecha, hora, médico y badge de estado. Usa tokens Oliva y miel (borde izquierdo por estado, sin emojis).»' },
+      { h: 'Prompt → Línea gráfica', t: '«Define la identidad Oliva y miel: tokens CSS oliva #3F6B52 y miel #C4923A, Fraunces+Figtree, BrandMark con pulso SVG, hero de marca en Home y docs/linea-grafica.md. Sin Inter ni terracota.»' },
       { h: 'Prompt → Tests', t: '«Escribe tests con Vitest + Supertest para el flujo: paciente crea cita, médico confirma, paciente ve estado confirmed. La DB debe ser :memory:.»' },
       { h: 'Prompt → Validaciones', t: '«Mueve la validación de fecha/hora a backend/src/utils/validation.js (isValidDate, isValidTime, isFutureDate) y añade la regla de negocio: una cita no puede tener fecha anterior a hoy (400). Escribe tests unitarios para cada caso: formato, calendario, fecha pasada y hora fuera de rango.»' },
     ],

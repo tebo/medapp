@@ -5,7 +5,8 @@
 MedApp gestiona citas médicas con el flujo:
 - El **paciente** crea una cita → estado `pending`.
 - El **médico** confirma o rechaza → estado `confirmed` o `rejected`.
-- (Futuro) El paciente puede cancelar → estado `cancelled`.
+- El **paciente** puede cancelar `pending`/`confirmed` → estado `cancelled`.
+- No se permiten dos citas activas del mismo médico en la misma fecha/hora (`409`).
 
 ## Tarea
 
@@ -19,6 +20,7 @@ GET    /api/appointments/mine          → listMyAppointments  (cualquier autent
 GET    /api/appointments/pending       → listPending         (solo doctor)
 PATCH  /api/appointments/:id/confirm   → confirm             (solo doctor)
 PATCH  /api/appointments/:id/reject    → reject              (solo doctor)
+PATCH  /api/appointments/:id/cancel    → cancel              (solo patient)
 ```
 
 ### 2. Controller (`controllers/appointments.controller.js`)
@@ -29,9 +31,11 @@ PATCH  /api/appointments/:id/reject    → reject              (solo doctor)
 - Validar que `date` **no sea anterior a hoy** (regla de negocio, `400`).
 - Validar formato de `time`: regex `^\d{2}:\d{2}$`.
 - Verificar que el doctor exista y tenga `role = 'doctor'`.
+- Si el médico ya tiene una cita `pending` o `confirmed` en esa fecha/hora → `409`.
 - Crear la cita con `patient_id = req.user.id`.
 - Retornar 201 `{ appointment }` con nombres del paciente y doctor.
-- Errores: 400 si faltan campos, formatos inválidos o fecha pasada; 404 si el doctor no existe.
+- Errores: 400 si faltan campos, formatos inválidos o fecha pasada; 409 si hay
+  solape; 400 si el doctor no es válido.
 
 Las validaciones de fecha/hora viven en `backend/src/utils/validation.js`
 (`isValidDate`, `isFutureDate`, `isValidTime`) para poder testearlas por separado.
@@ -50,10 +54,14 @@ Las validaciones de fecha/hora viven en `backend/src/utils/validation.js`
 - Intentar actualizar el status de la cita (`req.params.id`) con el usuario actual.
 - Si `setStatus` retorna `null` → 404 `{ error: 'Cita no encontrada o sin permisos' }`.
 - Si tiene éxito → 200 `{ appointment, message }`.
-- Los mensajes: `confirmed` → `'Cita confirmada'`, `rejected` → `'Cita rechazada'`.
+- Los mensajes: `confirmed` → `'Cita confirmada'`, `rejected` → `'Cita rechazada'`,
+  `cancelled` → `'Cita cancelada'`.
 
 **`confirm` = `updateStatus('confirmed')`**
 **`reject` = `updateStatus('rejected')`**
+
+**`cancelAppointment`:** solo paciente dueño; solo si status es `pending` o
+`confirmed`; si no → `400`; si no es suya → `404`.
 
 ### 3. Validaciones
 

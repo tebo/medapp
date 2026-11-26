@@ -22,7 +22,8 @@ proyecto educativo para aprender desarrollo asistido por IA.
 3. **Médico**: Ver solicitudes pendientes; confirmar o rechazar; filtrar historial.
 4. **Agenda**: anti-solapamiento de horarios (`409` si el slot está ocupado).
 5. **Guía de IA**: 7 capítulos navegables dentro de la app.
-6. **CI/CD**: Tests y build en GitHub Actions; imágenes Docker en GHCR.
+6. **Línea gráfica «Oliva y miel»**: oliva + miel, Fraunces/Figtree, BrandMark.
+7. **CI/CD**: Tests y build en GitHub Actions; imágenes Docker en GHCR.
 
 ## Flujo principal
 
@@ -38,7 +39,7 @@ Paciente registra → Login → Selecciona médico + fecha + motivo
 ```
 demoapp1/
 ├── .github/workflows/     # CI y Docker build
-├── docs/                  # API docs, setup, guía de IA (markdown)
+├── docs/                  # API, setup, guía IA, línea gráfica, prompts
 ├── docker/                # Dockerfiles y nginx.conf
 ├── backend/               # Express API
 │   ├── src/
@@ -52,15 +53,15 @@ demoapp1/
 │   │   ├── routes/        # Definición de endpoints
 │   │   └── utils/         # Validaciones (fecha/hora)
 │   └── tests/             # Vitest + Supertest
-├── frontend/              # Vue 3 SPA
+├── frontend/              # Vue 3 SPA — línea gráfica Oliva y miel
 │   ├── src/
-│   │   ├── components/    # NavBar, AppointmentCard, AppointmentForm
+│   │   ├── components/    # BrandMark, NavBar, Appointment*, StatusFilter
 │   │   ├── views/         # Home, Login, Register, Dashboards, Guía IA
 │   │   ├── stores/        # Auth store (Pinia)
 │   │   ├── composables/   # useAuth
 │   │   ├── router/        # Rutas con guards por rol
 │   │   ├── services/      # Cliente Axios
-│   │   └── assets/        # CSS global
+│   │   └── assets/        # Tokens CSS (main.css)
 │   └── tests/             # Vitest + jsdom
 ├── docker-compose.yml
 └── README.md
@@ -95,3 +96,4 @@ demoapp1/
 | 13 | Documentación y CSS | `13-documentation.md` |
 | 14 | Guía de IA | `14-guia-ia.md` |
 | 15 | Cancelar + anti-solape + filtro | `15-cancel-overlap-filter.md` |
+| 16 | Línea gráfica Oliva y miel | `16-linea-grafica.md` |

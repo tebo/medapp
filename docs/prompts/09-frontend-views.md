@@ -2,61 +2,77 @@
 
 ## Contexto
 
-MedApp tiene 3 vistas principales: Home, Dashboard del paciente y Dashboard
-del médico. Cada una muestra información diferente según el rol.
+MedApp tiene vistas principales bajo la línea gráfica **«Oliva y miel»**.
+La Home debe pasar el *brand test*: sin el nav, MedApp sigue siendo el
+protagonista visual del primer viewport.
 
 ## Tarea
 
 ### 1. HomeView (`views/HomeView.vue`)
 
-- **Hero section**: título "MedApp", subtítulo sobre citas médicas + guía de IA.
-- **2 cards de features** (grid-2):
-  - "Solicitar cita": descripción + CTA (link a registro o dashboard paciente según auth).
-  - "Confirmar cita": descripción + CTA (link a registro o dashboard médico según auth).
-- **Card de credenciales demo**: listar los 4 médicos demo con email y contraseña `doctor123`.
-- Usar clases `.card`, `.btn`, `.btn-outline`, `.grid-2`, `.container`.
+- **Hero a sangre** (no card inset):
+  - BrandMark + wordmark **MedApp** a tamaño hero.
+  - Un headline.
+  - Un párrafo corto de apoyo.
+  - Un grupo de CTAs (registro / panel / guía según auth).
+  - Gradiente oliva → miel + trazo tipo ECG de fondo.
+- **Debajo del fold** (no en el primer viewport):
+  - Bloques Paciente / Médico (sin cards decorativas; CTA outline).
+  - Credenciales demo (4 médicos, password `doctor123`).
+- Evitar stats, chips y promos en el hero.
 
-### 2. DashboardPatient (`views/DashboardPatient.vue`)
+### 2. LoginView / RegisterView
+
+- Incluir BrandMark + wordmark arriba del formulario.
+- Register: selector de rol Paciente/Médico **sin emojis**.
+- Usar tokens de superficie/borde de la línea gráfica.
+
+### 3. DashboardPatient (`views/DashboardPatient.vue`)
 
 **Al montar:**
 - Cargar citas del paciente (`GET /appointments/mine`).
-- Loading state con spinner/mensaje.
+- Loading state con mensaje.
 
 **Layout:**
-- Título: "Mi Panel — Solicitar Cita".
-- `AppointmentForm` arriba.
-- Lista de `AppointmentCard` abajo (sin `showActions`).
-- Estados: loading, error, empty ("No tienes citas aún").
+- Título display: "Mi panel de paciente".
+- Grid: `AppointmentForm` + listado.
+- `StatusFilter` sobre la lista.
+- `AppointmentCard` con `show-cancel`; manejar `@cancel` →
+  `PATCH /appointments/:id/cancel` y recargar.
+- Estados: loading, error, empty, empty filtrado.
 
-**Manejo de eventos:**
-- Al recibir evento `created` del form → recargar la lista de citas.
-
-### 3. DashboardDoctor (`views/DashboardDoctor.vue`)
+### 4. DashboardDoctor (`views/DashboardDoctor.vue`)
 
 **Al montar:**
 - Cargar en paralelo:
-  - `GET /appointments/pending` (citas pendientes).
-  - `GET /appointments/mine` (todas las citas del médico, para historial).
+  - `GET /appointments/pending`
+  - `GET /appointments/mine`
 
 **Estadísticas:**
-- Contadores calculados: pendientes, confirmadas, rechazadas.
-- Mostrar en badges/cards resumen.
+- Contadores: pendientes, confirmadas, rechazadas, canceladas.
+- Cards de resumen con tipografía display en el número.
 
 **Layout:**
-- Título: "Panel del Médico".
-- Sección "Citas Pendientes" con `AppointmentCard` (con `showActions`).
-- Sección "Historial de Decisiones" con `AppointmentCard` (sin actions).
+- Título: "Panel del médico".
+- Sección pendientes con `AppointmentCard` (`show-actions`).
+- Historial con `StatusFilter` (sin opción `pending`) + cards.
 
-**Manejo de eventos:**
-- Confirmar: `PATCH /appointments/:id/confirm`.
-- Rechazar: `PATCH /appointments/:id/reject`.
-- Después de cada acción → recargar ambas listas.
+**Acciones:**
+- Confirmar / rechazar → `PATCH .../confirm|reject` y recargar.
 
-### Archivos a crear
+### 5. GuiaIAView
+
+- Tabs con radio suave (no píldoras full).
+- Tipografía y bordes alineados a tokens Oliva y miel.
+
+### Archivos a crear / actualizar
 
 ```
 frontend/src/views/
 ├── HomeView.vue
+├── LoginView.vue
+├── RegisterView.vue
 ├── DashboardPatient.vue
-└── DashboardDoctor.vue
+├── DashboardDoctor.vue
+└── GuiaIAView.vue
 ```

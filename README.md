@@ -36,7 +36,10 @@ demoapp1/
 ├── .github/workflows/        # CI y build de imágenes Docker
 ├── docs/
 │   ├── guia-ia/              # Guía completa de uso de IA (7 capítulos)
+│   ├── prompts/              # Prompts reutilizables (00–16)
+│   ├── linea-grafica.md      # Identidad visual Oliva y miel
 │   ├── api.md                # Documentación de la API
+│   ├── roadmap-features.md   # Ideas de features para clase
 │   └── setup.md              # Guía de instalación y prueba
 ├── docker/                   # Dockerfiles y configuración nginx
 ├── backend/                  # API: Express + better-sqlite3 + JWT
@@ -49,13 +52,14 @@ demoapp1/
 │   │   ├── routes/           # endpoints por dominio (auth, doctors, citas)
 │   │   └── utils/            # validaciones (fecha/hora)
 │   └── tests/                # Vitest + Supertest
-├── frontend/                 # Vue 3 + Vite + Pinia
+├── frontend/                 # Vue 3 + Vite + Pinia (Oliva y miel)
 │   ├── src/
-│   │   ├── components/       # NavBar, AppointmentForm, AppointmentCard
+│   │   ├── components/       # BrandMark, NavBar, Appointment*, StatusFilter
 │   │   ├── views/            # Home, Login, Register, dashboards, Guía IA
 │   │   ├── stores/           # store de autenticación (Pinia)
 │   │   ├── router/           # rutas protegidas por rol
-│   │   └── services/         # cliente Axios con interceptor JWT
+│   │   ├── services/         # cliente Axios con interceptor JWT
+│   │   └── assets/           # tokens CSS (main.css)
 │   └── tests/
 ├── docker-compose.yml        # backend + frontend con un comando
 └── README.md
@@ -106,7 +110,9 @@ La misma guía está accesible **dentro de la aplicación** en la ruta `/guia-ia
 
 - [Setup completo](docs/setup.md) — instalación, variables de entorno, Docker.
 - [API](docs/api.md) — endpoints, ejemplos y estados de cita.
+- [Línea gráfica](docs/linea-grafica.md) — Oliva y miel (tokens y tipografía).
 - [Roadmap de features para clase](docs/roadmap-features.md) — ideas de demos con IA.
+- [Prompts](docs/prompts/00-overview.md) — índice 00–16 (incluye UI y cancel/filtros).
 
 ## Tests
 

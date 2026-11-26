@@ -59,6 +59,10 @@ npm run dev          # arranca en http://localhost:5173
 En desarrollo, Vite proxía `/api` hacia `http://localhost:3001`, así que no hace
 falta configurar la URL de la API.
 
+La UI usa la línea gráfica **Oliva y miel** (Fraunces + Figtree, tokens oliva/miel).
+Detalle: [linea-grafica.md](./linea-grafica.md). Para iterar con IA, usa el prompt
+`docs/prompts/16-linea-grafica.md`.
+
 ### Variables de entorno del frontend
 
 | Variable | Valor por defecto | Descripción |
@@ -100,4 +104,6 @@ reinicios. Para resetear: `docker compose down -v`.
 2. Solicita una cita con algún médico.
 3. Sal de sesión y entra como médico demo (`ana.torres@medapp.com` / `doctor123`).
 4. Confirma la cita pendiente.
-5. Vuelve a entrar como paciente y comprueba que aparece **Confirmada**.
+5. Vuelve a entrar como paciente, comprueba que aparece **Confirmada** y pruébala
+   **Cancelar**.
+6. Intenta crear otra cita en la misma fecha/hora: debe responder `409`.

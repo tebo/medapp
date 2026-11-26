@@ -54,6 +54,7 @@ Crear store Pinia con:
 
 ### 3. LoginView (`views/LoginView.vue`)
 
+- Cabecera con `BrandMark` + wordmark MedApp (línea gráfica Oliva y miel).
 - Formulario con `email` y `password` (v-model).
 - Enviar al composable `login()`.
 - Si hay `route.query.redirect`, redirigir ahí después del login.
@@ -63,12 +64,14 @@ Crear store Pinia con:
 
 ### 4. RegisterView (`views/RegisterView.vue`)
 
-- Formulario con: `name`, `email`, `password`, `role` (radio: patient/doctor).
+- Cabecera con `BrandMark` + wordmark MedApp.
+- Formulario con: `name`, `email`, `password`, `role` (radio: patient/doctor, **sin emojis**).
 - Si `role === 'doctor'`, mostrar campo `specialty`.
 - Enviar al composable `register()`.
 - Mostrar errores del servidor.
 - Link a login: "¿Ya tienes cuenta? Inicia sesión".
 - Estado de carga durante submit.
+- Roles seleccionados con borde/fondo `--primary` / `--primary-soft` (no azul `#eff6ff`).
 
 ### Archivos a crear
 

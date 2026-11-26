@@ -11,11 +11,15 @@ propia aplicación en la ruta `/guia-ia`. Son 7 capítulos navegables con tabs.
 
 Crear vista con:
 
-- **Tabs de navegación**: 7 capítulos como botones/tabs.
+- **Tabs de navegación**: 7 capítulos como botones/tabs (radio suave, no píldoras
+  `999px`; tokens Oliva y miel).
 - **Contenido dinámico**: mostrar el capítulo seleccionado.
 - **Contenido hardcodeado** en el componente (no cargar de archivos MD).
-- **Diseño**: cards con tipografía clara, bloques de código con estilo.
+- **Diseño**: tipografía Fraunces en títulos, Figtree en cuerpo; bloques con
+  borde piedra / soft primario.
 - **Navegación**: tabs horizontales, responsive (scrollable en móvil).
+- Incluir en el capítulo de ejemplos un prompt de **línea gráfica** (ver
+  `docs/prompts/16-linea-grafica.md`).
 
 ### 2. Capítulos
 

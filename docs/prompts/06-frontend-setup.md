@@ -58,6 +58,7 @@ Crear rutas con lazy loading:
 - Crear app Vue.
 - Instalar Pinia.
 - Instalar router.
+- Importar `./assets/main.css` (tokens **Oliva y miel**).
 - Montar en `#app`.
 
 ### 5. App.vue
@@ -71,12 +72,22 @@ Crear rutas con lazy loading:
 
 Importar `NavBar` y usar `<router-view />` para el contenido.
 
+### 6. Tipografía e identidad base
+
+- En `frontend/index.html`, cargar Google Fonts **Fraunces** + **Figtree**.
+- Título del documento: `MedApp — Citas médicas`.
+- Los tokens CSS viven en `frontend/src/assets/main.css` (ver prompt 13 y
+  `docs/linea-grafica.md`). No uses Inter/Roboto/system-ui como stack principal.
+
 ### Archivos a crear
 
 ```
-frontend/src/
-├── main.js
-├── App.vue
-├── services/api.js
-└── router/index.js
+frontend/
+├── index.html
+└── src/
+    ├── main.js
+    ├── App.vue
+    ├── assets/main.css
+    ├── services/api.js
+    └── router/index.js
 ```
