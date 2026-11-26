@@ -50,12 +50,12 @@ jobs:
           tags: medapp-backend:scan
           labels: ${{ steps.meta-backend.outputs.labels }}
 
-      - name: Trivy scan backend image
+      - name: Trivy scan backend image (gate CRITICAL)
         uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: medapp-backend:scan
-          severity: CRITICAL,HIGH
-          exit-code: '0'
+          severity: CRITICAL
+          exit-code: '1'
           format: table
           ignore-unfixed: true
 
@@ -78,12 +78,12 @@ jobs:
           tags: medapp-frontend:scan
           labels: ${{ steps.meta-frontend.outputs.labels }}
 
-      - name: Trivy scan frontend image
+      - name: Trivy scan frontend image (gate CRITICAL)
         uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: medapp-frontend:scan
-          severity: CRITICAL,HIGH
-          exit-code: '0'
+          severity: CRITICAL
+          exit-code: '1'
           format: table
           ignore-unfixed: true
 

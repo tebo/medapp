@@ -38,7 +38,7 @@ funciona de extremo a extremo con control de acceso por rol.
 - Pruebas de rendimiento/estrés a escala (aplicación educativa con SQLite).
 - Pen-testing exhaustivo y cumplimiento de normativas de salud (HIPAA/RGPD clínico).
 - Compatibilidad con múltiples navegadores antiguos (validado en navegadores modernos).
-- Quality gates duros de CVE (Fase B del plan de seguridad).
+- Pen-testing manual exhaustivo y firma de imágenes (Fase C del plan de seguridad).
 
 ## 3. Componentes bajo prueba
 
@@ -228,10 +228,10 @@ críticos/mayores bloquean el criterio de salida de la iteración.
 ## 11. Integración con CI/CD
 
 - `.github/workflows/ci.yml`: `npm test` (backend/frontend) + build. **Fallo bloquea merge.**
-- `.github/workflows/security.yml`: audit npm (prod), Gitleaks, Trivy FS
-  (Fase A: audit/trivy en modo reporte; Gitleaks sí bloquea).
-- `.github/workflows/docker.yml`: build → Trivy imagen → push GHCR.
-- Recomendado: E2E Playwright + Fase B (gates de CVE) — ver plan de seguridad.
+- `.github/workflows/security.yml`: gates — audit npm prod (HIGH+), Gitleaks,
+  Trivy FS (CRITICAL).
+- `.github/workflows/docker.yml`: build → Trivy imagen (CRITICAL) → push GHCR.
+- Recomendado: E2E Playwright + Fase C (SBOM/cosign/DAST) — ver plan de seguridad.
 
 ## 12. Riesgos y mitigación
 

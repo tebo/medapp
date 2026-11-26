@@ -27,11 +27,11 @@ Detalle del plan: `docs/plan-seguridad.md`. Prompt hermano: `18-security-pipelin
 
 **Trigger:** push y PR a `main`.
 
-**Jobs:**
+**Jobs (Fase B — gates):**
 - `dependency-audit` — `npm audit --omit=dev --audit-level=high` en backend y
-  frontend. Fase A: `continue-on-error: true` (reporte). Fase B: quitarlo.
+  frontend. **Falla el job** si hay HIGH/CRITICAL en producción.
 - `secrets-scan` — Gitleaks Action (falla si hay secretos).
-- `trivy-fs` — Trivy scan tipo `fs` severidad CRITICAL,HIGH (Fase A: exit 0).
+- `trivy-fs` — Trivy `fs`, severidad CRITICAL, `exit-code: 1`.
 
 ### 3. Workflow de Docker (`.github/workflows/docker.yml`)
 
@@ -43,7 +43,7 @@ Detalle del plan: `docs/plan-seguridad.md`. Prompt hermano: `18-security-pipelin
 1. Login GHCR.
 2. Metadata tags.
 3. Build local (`push: false`, `load: true`, tag `:scan`).
-4. Trivy image scan (CRITICAL/HIGH; Fase A exit 0).
+4. Trivy image scan (CRITICAL, `exit-code: 1` — no publica si falla).
 5. Build/push a GHCR con tags finales.
 
 ### Archivos
@@ -60,5 +60,6 @@ docs/
 
 ### Notas para clase
 
-- Fase A = **ver** hallazgos; Fase B = **bloquear** merges inseguros.
+- Fase A = **ver**; Fase B = **bloquear** (audit prod HIGH+, Trivy CRITICAL, Gitleaks).
+- El gate de audit usa `--omit=dev`: CVE solo en Vitest/nodemon no bloquean el merge.
 - No confundir `npm audit` (deps) con tests de autorización (Supertest S01–S06).

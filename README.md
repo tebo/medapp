@@ -128,9 +128,9 @@ cd frontend && npm test   # 41 tests (store + router + componentes + api)
 ## CI/CD
 
 - `.github/workflows/ci.yml`: tests del backend y frontend + build del frontend.
-- `.github/workflows/security.yml`: `npm audit` (prod), Gitleaks y Trivy FS
-  (plan Fase A — visibilidad; ver [plan de seguridad](docs/plan-seguridad.md)).
-- `.github/workflows/docker.yml`: build → Trivy imagen → push a
+- `.github/workflows/security.yml`: gates Fase B — `npm audit` prod (HIGH+),
+  Gitleaks y Trivy FS (CRITICAL). Ver [plan de seguridad](docs/plan-seguridad.md).
+- `.github/workflows/docker.yml`: build → Trivy imagen (CRITICAL) → push a
   `ghcr.io/<usuario>/<repo>-backend|frontend` en `main` y tags `v*`.
 
 ## Notas de seguridad (demo)

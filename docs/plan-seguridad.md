@@ -1,6 +1,6 @@
 # Plan de seguridad — MedApp (demo educativa)
 
-Versión: **1.0** · Alcance: aplicación demo de citas médicas + pipeline DevOps  
+Versión: **1.1** (Fase B) · Alcance: aplicación demo de citas médicas + pipeline DevOps  
 Público: clases de ingeniería de software (desarrollo asistido por IA)
 
 > MedApp **no** pretende cumplimiento clínico real (HIPAA/RGPD salud). El plan
@@ -66,10 +66,9 @@ imágenes base desactualizadas.
 
 | Control | Estado | Cómo |
 |---------|--------|------|
-| `npm audit` (prod) en CI | ✅ Fase A (reporte) | Job `dependency-audit` |
-| Gate que falle en critical | ⏳ Fase B | Tras `npm audit fix` estable |
-| Scan filesystem Trivy | ✅ Fase A | Job `trivy-fs` |
-| Scan imagen Docker Trivy | ✅ Fase A | En `docker.yml` antes/después build |
+| `npm audit` (prod) en CI | ✅ Fase B (gate HIGH+) | Job `dependency-audit` sin continue-on-error |
+| Gate Trivy CRITICAL (FS) | ✅ Fase B | `trivy-fs` exit-code 1 |
+| Scan imagen Docker Trivy | ✅ Fase B (gate CRITICAL) | En `docker.yml` antes del push |
 
 ## 5. Pipeline de seguridad (DevOps)
 
@@ -85,20 +84,20 @@ PR / push a main
         build → trivy image → push GHCR
 ```
 
-### Fase A — Visibilidad (implementada)
+### Fase A — Visibilidad (hecha)
 
-- Ejecutar escaneos en cada PR.
-- Publicar hallazgos en el log de Actions.
-- `dependency-audit` con `continue-on-error: true` mientras existan CVE conocidas
-  en el lockfile educativo (documentadas; no ocultarlas).
+- Escaneos en cada PR; hallazgos en el log de Actions.
+- Audit en modo reporte (`continue-on-error`) mientras se estabilizaba el lockfile.
 
-### Fase B — Quality gates (siguiente iteración de clase)
+### Fase B — Quality gates (implementada)
 
-1. Corregir CVE de producción (`npm audit fix` acotado).
-2. Quitar `continue-on-error` en audit de dependencias de producción.
-3. Fallar el job si Trivy encuentra CRITICAL en imagen.
-4. Añadir rate limit + tests de seguridad de API (401/403 sistemáticos).
-5. (Opcional) CodeQL o OWASP ZAP baseline contra entorno Docker.
+1. ✅ CVE HIGH/CRITICAL de **producción** corregidas (`npm audit fix --omit=dev`).
+2. ✅ `dependency-audit` **bloquea** el merge si hay HIGH+ en deps de prod.
+3. ✅ Trivy FS e imagen fallan el job ante **CRITICAL** (unfixed).
+4. ✅ Gitleaks sigue bloqueando secretos.
+5. ⏳ Siguiente plus: rate limit login + batería explícita S01–S06 como suite `security`.
+6. ⏳ Dev-deps (p. ej. tinypool vía Vitest) quedan fuera del gate prod; planear upgrade
+   de Vitest en una sesión aparte (`npm audit` sin `--omit=dev`).
 
 ### Fase C — Madurez (opcional avanzado)
 
@@ -117,10 +116,10 @@ PR / push a main
 | S05 | Login con password incorrecto | 401, sin filtrar si el email existe de más |
 | S06 | Registro con rol `admin` inventado | 400 (solo patient\|doctor) |
 | S07 | Buscar `JWT_SECRET` / passwords en el repo | Gitleaks limpio |
-| S08 | Dependencias prod con CRITICAL conocidas | Inventario + plan de fix (Fase B) |
+| S08 | Dependencias prod con HIGH/CRITICAL | CI falla (`npm audit --omit=dev --audit-level=high`) |
 
 Los S01–S06 ya están cubiertos en gran parte por tests Supertest; el pipeline
-de seguridad añade S07–S08 y escaneo de contenedor.
+de seguridad añade S07–S08 y escaneo de contenedor (gate CRITICAL).
 
 ## 7. Checklist de revisión (PR que toquen auth o datos)
 
