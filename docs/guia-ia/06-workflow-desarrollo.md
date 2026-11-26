@@ -48,8 +48,8 @@ Para cada feature: prompt → revisión → ajuste (1-3 iteraciones) → siguien
 No avances a la siguiente feature sin verificar la anterior:
 
 ```bash
-npm test          # backend: 67 tests (auth + citas + médicos + unitarias)
-npm test          # frontend: 35 tests (store, router, componentes y API)
+npm test          # backend: 73 tests (auth + citas + médicos + unitarias)
+npm test          # frontend: 41 tests (store, router, componentes y API)
 npm run build     # frontend: build de producción
 ```
 

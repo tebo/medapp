@@ -4,9 +4,10 @@ import { computed } from 'vue'
 const props = defineProps({
   appointment: { type: Object, required: true },
   showActions: { type: Boolean, default: false },
+  showCancel: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['confirm', 'reject'])
+const emit = defineEmits(['confirm', 'reject', 'cancel'])
 
 const statusLabel = computed(() => {
   const map = {
@@ -24,6 +25,10 @@ const dateLabel = computed(() => {
   const [y, m, d] = props.appointment.date.split('-')
   return `${d}/${m}/${y}`
 })
+
+const canCancel = computed(() =>
+  props.showCancel && ['pending', 'confirmed'].includes(props.appointment.status)
+)
 </script>
 
 <template>
@@ -52,6 +57,10 @@ const dateLabel = computed(() => {
     <div v-if="showActions && appointment.status === 'pending'" class="actions">
       <button class="btn btn-success" @click="emit('confirm', appointment)">Confirmar</button>
       <button class="btn btn-danger" @click="emit('reject', appointment)">Rechazar</button>
+    </div>
+
+    <div v-else-if="canCancel" class="actions">
+      <button class="btn btn-outline" @click="emit('cancel', appointment)">Cancelar cita</button>
     </div>
   </div>
 </template>

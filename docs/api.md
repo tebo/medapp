@@ -75,6 +75,7 @@ Respuesta `200`: igual que register. Error `401` si credenciales inválidas.
 | GET | `/appointments/pending` | doctor | Solicitudes pendientes del doctor |
 | PATCH | `/appointments/:id/confirm` | doctor | Confirmar cita |
 | PATCH | `/appointments/:id/reject` | doctor | Rechazar cita |
+| PATCH | `/appointments/:id/cancel` | patient | Cancelar cita propia (`pending` o `confirmed`) |
 
 #### POST `/appointments`
 
@@ -98,16 +99,31 @@ Respuesta `201`:
 
 Validaciones: `date` obligatoria con formato `YYYY-MM-DD` y **no anterior a hoy**;
 `time` obligatoria con formato `HH:MM`. Errores: `400` si faltan campos, el formato
-es inválido, la fecha es pasada o el doctor no existe.
+es inválido, la fecha es pasada o el doctor no existe. Error `409` si el médico ya
+tiene una cita `pending` o `confirmed` en la misma fecha y hora.
+
+#### PATCH `/appointments/:id/cancel`
+
+Solo el paciente dueño de la cita. Solo si el estado es `pending` o `confirmed`.
+
+Respuesta `200`:
+
+```json
+{ "appointment": { "...": "...", "status": "cancelled" }, "message": "Cita cancelada" }
+```
+
+Errores: `400` (estado no cancelable), `403` (rol distinto de patient), `404` (cita
+ajena o inexistente).
 
 #### Estados de una cita
 
-`pending` → `confirmed` | `rejected` | `cancelled`
+`pending` → `confirmed` | `rejected` | `cancelled`  
+`confirmed` → `cancelled`
 
 - `pending`: creada por el paciente, esperando respuesta.
 - `confirmed`: aceptada por el médico.
 - `rejected`: rechazada por el médico.
-- `cancelled`: cancelada (reservado para futura funcionalidad).
+- `cancelled`: cancelada por el paciente (libera el horario del médico).
 
 ### Ejemplo rápido con curl
 

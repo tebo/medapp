@@ -2,20 +2,35 @@
 import { ref, computed, onMounted } from 'vue'
 import api from '../services/api'
 import AppointmentCard from '../components/AppointmentCard.vue'
+import StatusFilter from '../components/StatusFilter.vue'
 import { useAuthStore } from '../stores/auth'
 
 const auth = useAuthStore()
 const pending = ref([])
 const answered = ref([])
+const historyFilter = ref('all')
 const loading = ref(true)
 const error = ref('')
 const message = ref('')
+
+const historyOptions = [
+  { value: 'all', label: 'Todas' },
+  { value: 'confirmed', label: 'Confirmadas' },
+  { value: 'rejected', label: 'Rechazadas' },
+  { value: 'cancelled', label: 'Canceladas' },
+]
 
 const summary = computed(() => ({
   pending: pending.value.length,
   confirmed: answered.value.filter((a) => a.status === 'confirmed').length,
   rejected: answered.value.filter((a) => a.status === 'rejected').length,
+  cancelled: answered.value.filter((a) => a.status === 'cancelled').length,
 }))
+
+const filteredHistory = computed(() => {
+  if (historyFilter.value === 'all') return answered.value
+  return answered.value.filter((a) => a.status === historyFilter.value)
+})
 
 async function loadData() {
   loading.value = true
@@ -56,7 +71,7 @@ onMounted(loadData)
     <div v-if="message" class="alert-success">{{ message }}</div>
     <div v-if="error" class="alert-error">{{ error }}</div>
 
-    <div class="grid-3 mb-2">
+    <div class="grid-4 mb-2">
       <div class="card stat-card">
         <strong>{{ summary.pending }}</strong>
         <span>Pendientes</span>
@@ -68,6 +83,10 @@ onMounted(loadData)
       <div class="card stat-card">
         <strong>{{ summary.rejected }}</strong>
         <span>Rechazadas</span>
+      </div>
+      <div class="card stat-card">
+        <strong>{{ summary.cancelled }}</strong>
+        <span>Canceladas</span>
       </div>
     </div>
 
@@ -84,9 +103,13 @@ onMounted(loadData)
     />
 
     <h3 class="mb-1 mt-2">Historial de decisiones</h3>
+    <StatusFilter v-model="historyFilter" :options="historyOptions" />
     <p v-if="answered.length === 0" class="text-muted">Aún no has respondido ninguna solicitud.</p>
+    <p v-else-if="filteredHistory.length === 0" class="text-muted">
+      No hay citas con ese estado en el historial.
+    </p>
     <AppointmentCard
-      v-for="appointment in answered"
+      v-for="appointment in filteredHistory"
       :key="appointment.id"
       :appointment="appointment"
     />
@@ -95,10 +118,13 @@ onMounted(loadData)
 
 <style scoped>
 .page-title { font-size: 1.5rem; margin-top: 1rem; }
-.grid-3 {
+.grid-4 {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
+}
+@media (max-width: 720px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
 .stat-card { text-align: center; }
 .stat-card strong { display: block; font-size: 1.75rem; color: var(--primary); }

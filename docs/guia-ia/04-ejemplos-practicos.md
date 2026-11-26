@@ -86,7 +86,8 @@ validaciones de fecha/hora en `backend/src/utils/validation.js` (`isValidDate`,
 **Resultado:** `backend/tests/auth.test.js`, `backend/tests/appointments.test.js` y
 `backend/tests/doctors.test.js` (integración) más las suites unitarias
 `backend/tests/validation.test.js`, `backend/tests/middleware.auth.test.js` y
-`backend/tests/user.service.test.js`. En total **67 tests**.
+`backend/tests/user.service.test.js`. En total **73 tests** (incluye cancelación
+y anti-solapamiento).
 
 ## 4.9 Prompt → Cliente API del frontend
 
