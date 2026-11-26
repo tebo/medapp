@@ -18,10 +18,11 @@ proyecto educativo para aprender desarrollo asistido por IA.
 ## Funcionalidades
 
 1. **Autenticación**: Login/registro con roles `patient` y `doctor` (JWT).
-2. **Paciente**: Seleccionar médico, fecha, motivo; ver estado de citas.
-3. **Médico**: Ver solicitudes pendientes; confirmar o rechazar.
-4. **Guía de IA**: 7 capítulos navegables dentro de la app.
-5. **CI/CD**: Tests y build en GitHub Actions; imágenes Docker en GHCR.
+2. **Paciente**: Seleccionar médico, fecha, motivo; ver y filtrar citas; cancelar.
+3. **Médico**: Ver solicitudes pendientes; confirmar o rechazar; filtrar historial.
+4. **Agenda**: anti-solapamiento de horarios (`409` si el slot está ocupado).
+5. **Guía de IA**: 7 capítulos navegables dentro de la app.
+6. **CI/CD**: Tests y build en GitHub Actions; imágenes Docker en GHCR.
 
 ## Flujo principal
 
@@ -93,3 +94,4 @@ demoapp1/
 | 12 | CI/CD | `12-cicd.md` |
 | 13 | Documentación y CSS | `13-documentation.md` |
 | 14 | Guía de IA | `14-guia-ia.md` |
+| 15 | Cancelar + anti-solape + filtro | `15-cancel-overlap-filter.md` |

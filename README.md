@@ -15,8 +15,12 @@ Stack: **Vue 3 + Vite + Pinia** (frontend) · **Node.js + Express + SQLite** (ba
 
 - **Login y registro** con roles `patient` y `doctor` (JWT + bcrypt).
 - **Paciente**: elige médico, fecha y motivo; ve el estado de sus citas
-  (`pending` → `confirmed`/`rejected`).
-- **Médico**: recibe solicitudes pendientes y confirma o rechaza.
+  (`pending` → `confirmed`/`rejected`/`cancelled`) y puede **cancelar**.
+- **Médico**: recibe solicitudes pendientes y confirma o rechaza; ve canceladas
+  en el historial.
+- **Anti-solapamiento**: no se pueden crear dos citas activas del mismo médico
+  en la misma fecha y hora (`409`).
+- **Filtro por estado** en ambos paneles.
 - **Guía de IA completa**: 7 capítulos navegables dentro de la propia aplicación.
 - **SQLite**: base de datos embebida, sin instalación extra; se crea al arrancar
   con médicos de demostración.
@@ -99,12 +103,13 @@ La misma guía está accesible **dentro de la aplicación** en la ruta `/guia-ia
 
 - [Setup completo](docs/setup.md) — instalación, variables de entorno, Docker.
 - [API](docs/api.md) — endpoints, ejemplos y estados de cita.
+- [Roadmap de features para clase](docs/roadmap-features.md) — ideas de demos con IA.
 
 ## Tests
 
 ```bash
-cd backend  && npm test   # 67 tests (auth + citas + médicos + unitarias)
-cd frontend && npm test   # 35 tests (store + router + componentes + api)
+cd backend  && npm test   # 73 tests (auth + citas + médicos + unitarias)
+cd frontend && npm test   # 41 tests (store + router + componentes + api)
 ```
 
 ## CI/CD

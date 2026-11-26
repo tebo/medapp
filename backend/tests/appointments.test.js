@@ -31,10 +31,10 @@ describe('API de citas médicas', () => {
     const res = await request(app)
       .post('/api/appointments')
       .set('Authorization', `Bearer ${patient.token}`)
-      .send({ doctorId: doctor.user.id, date: '2026-10-15', time: '10:30', reason: 'Consulta de rutina' })
+      .send({ doctorId: doctor.user.id, date: '2027-01-15', time: '10:30', reason: 'Consulta de rutina' })
 
     expect(res.status).toBe(201)
-    expect(res.body.appointment).toMatchObject({ status: 'pending', date: '2026-10-15' })
+    expect(res.body.appointment).toMatchObject({ status: 'pending', date: '2027-01-15' })
   })
 
   it('el paciente puede ver sus citas', async () => {
@@ -257,5 +257,108 @@ describe('API de citas médicas', () => {
       .set('Authorization', `Bearer ${patient.token}`)
 
     expect(res.status).toBe(403)
+  })
+
+  it('el paciente cancela una cita pendiente', async () => {
+    const created = await request(app)
+      .post('/api/appointments')
+      .set('Authorization', `Bearer ${patient.token}`)
+      .send({ doctorId: doctor.user.id, date: '2026-12-10', time: '09:00', reason: 'Cancelable' })
+
+    const res = await request(app)
+      .patch(`/api/appointments/${created.body.appointment.id}/cancel`)
+      .set('Authorization', `Bearer ${patient.token}`)
+
+    expect(res.status).toBe(200)
+    expect(res.body.appointment.status).toBe('cancelled')
+  })
+
+  it('el paciente cancela una cita confirmada', async () => {
+    const created = await request(app)
+      .post('/api/appointments')
+      .set('Authorization', `Bearer ${patient.token}`)
+      .send({ doctorId: doctor.user.id, date: '2026-12-11', time: '09:00' })
+
+    await request(app)
+      .patch(`/api/appointments/${created.body.appointment.id}/confirm`)
+      .set('Authorization', `Bearer ${doctor.token}`)
+
+    const res = await request(app)
+      .patch(`/api/appointments/${created.body.appointment.id}/cancel`)
+      .set('Authorization', `Bearer ${patient.token}`)
+
+    expect(res.status).toBe(200)
+    expect(res.body.appointment.status).toBe('cancelled')
+  })
+
+  it('no se puede cancelar una cita ya rechazada', async () => {
+    const created = await request(app)
+      .post('/api/appointments')
+      .set('Authorization', `Bearer ${patient.token}`)
+      .send({ doctorId: doctor.user.id, date: '2026-12-12', time: '09:00' })
+
+    await request(app)
+      .patch(`/api/appointments/${created.body.appointment.id}/reject`)
+      .set('Authorization', `Bearer ${doctor.token}`)
+
+    const res = await request(app)
+      .patch(`/api/appointments/${created.body.appointment.id}/cancel`)
+      .set('Authorization', `Bearer ${patient.token}`)
+
+    expect(res.status).toBe(400)
+  })
+
+  it('un doctor no puede cancelar citas', async () => {
+    const created = await request(app)
+      .post('/api/appointments')
+      .set('Authorization', `Bearer ${patient.token}`)
+      .send({ doctorId: doctor.user.id, date: '2026-12-13', time: '09:00' })
+
+    const res = await request(app)
+      .patch(`/api/appointments/${created.body.appointment.id}/cancel`)
+      .set('Authorization', `Bearer ${doctor.token}`)
+
+    expect(res.status).toBe(403)
+  })
+
+  it('rechaza una segunda cita en el mismo horario del médico', async () => {
+    const other = await registerUser({
+      name: 'Otro Paciente',
+      email: 'otro@test.com',
+      password: 'secreto123',
+      role: 'patient',
+    })
+
+    await request(app)
+      .post('/api/appointments')
+      .set('Authorization', `Bearer ${patient.token}`)
+      .send({ doctorId: doctor.user.id, date: '2026-12-14', time: '15:00', reason: 'Primera' })
+
+    const res = await request(app)
+      .post('/api/appointments')
+      .set('Authorization', `Bearer ${other.token}`)
+      .send({ doctorId: doctor.user.id, date: '2026-12-14', time: '15:00', reason: 'Conflicto' })
+
+    expect(res.status).toBe(409)
+    expect(res.body.error).toMatch(/ya tiene una cita/i)
+  })
+
+  it('permite reusar un horario tras cancelar la cita previa', async () => {
+    const created = await request(app)
+      .post('/api/appointments')
+      .set('Authorization', `Bearer ${patient.token}`)
+      .send({ doctorId: doctor.user.id, date: '2026-12-15', time: '16:00' })
+
+    await request(app)
+      .patch(`/api/appointments/${created.body.appointment.id}/cancel`)
+      .set('Authorization', `Bearer ${patient.token}`)
+
+    const res = await request(app)
+      .post('/api/appointments')
+      .set('Authorization', `Bearer ${patient.token}`)
+      .send({ doctorId: doctor.user.id, date: '2026-12-15', time: '16:00' })
+
+    expect(res.status).toBe(201)
+    expect(res.body.appointment.status).toBe('pending')
   })
 })

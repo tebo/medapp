@@ -31,6 +31,13 @@ function createAppointment(req, res, next) {
       return res.status(400).json({ error: 'El doctor no existe o no es un médico válido' })
     }
 
+    const conflict = appointmentModel.findDoctorSlotConflict(doctorId, date, time)
+    if (conflict) {
+      return res.status(409).json({
+        error: 'El médico ya tiene una cita pendiente o confirmada en esa fecha y hora',
+      })
+    }
+
     const appointment = appointmentModel.createAppointment({
       patientId: req.user.id,
       doctorId,
@@ -77,10 +84,34 @@ function updateStatus(status) {
   }
 }
 
+function cancelAppointment(req, res, next) {
+  try {
+    const result = appointmentModel.cancelByPatient(req.params.id, req.user.id)
+
+    if (result.error === 'not_found') {
+      return res.status(404).json({ error: 'Cita no encontrada o sin permisos' })
+    }
+    if (result.error === 'invalid_status') {
+      return res.status(400).json({
+        error: 'Solo se pueden cancelar citas pendientes o confirmadas',
+        appointment: result.appointment,
+      })
+    }
+
+    return res.json({
+      appointment: result.appointment,
+      message: STATUS_RESPONSE.cancelled,
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
 module.exports = {
   createAppointment,
   listMyAppointments,
   listPending,
   confirm: updateStatus('confirmed'),
   reject: updateStatus('rejected'),
+  cancel: cancelAppointment,
 }

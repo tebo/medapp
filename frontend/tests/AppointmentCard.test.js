@@ -102,4 +102,31 @@ describe('AppointmentCard', () => {
 
     expect(wrapper.find('.reason').exists()).toBe(false)
   })
+
+  it('emite cancel cuando showCancel y la cita es cancelable', async () => {
+    const wrapper = mount(AppointmentCard, {
+      props: { appointment: makeAppointment('pending'), showCancel: true },
+    })
+
+    await wrapper.find('.btn-outline').trigger('click')
+
+    expect(wrapper.emitted('cancel')).toBeTruthy()
+    expect(wrapper.emitted('cancel')[0][0]).toMatchObject({ id: 1, status: 'pending' })
+  })
+
+  it('permite cancelar citas confirmadas', () => {
+    const wrapper = mount(AppointmentCard, {
+      props: { appointment: makeAppointment('confirmed'), showCancel: true },
+    })
+
+    expect(wrapper.find('.btn-outline').exists()).toBe(true)
+  })
+
+  it('no muestra cancelar en citas rechazadas', () => {
+    const wrapper = mount(AppointmentCard, {
+      props: { appointment: makeAppointment('rejected'), showCancel: true },
+    })
+
+    expect(wrapper.find('.btn-outline').exists()).toBe(false)
+  })
 })
