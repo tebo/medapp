@@ -33,11 +33,13 @@ detalle en [docs/linea-grafica.md](docs/linea-grafica.md).
 
 ```
 demoapp1/
-├── .github/workflows/        # CI y build de imágenes Docker
+├── .github/workflows/        # CI, security y build Docker/GHCR
 ├── docs/
 │   ├── guia-ia/              # Guía completa de uso de IA (7 capítulos)
-│   ├── prompts/              # Prompts reutilizables (00–16)
+│   ├── prompts/              # Prompts reutilizables (00–18)
 │   ├── linea-grafica.md      # Identidad visual Oliva y miel
+│   ├── plan-seguridad.md     # Amenazas, controles y pipeline
+│   ├── plan-pruebas.md       # Estrategia de QA
 │   ├── api.md                # Documentación de la API
 │   ├── roadmap-features.md   # Ideas de features para clase
 │   └── setup.md              # Guía de instalación y prueba
@@ -112,8 +114,9 @@ La misma guía está accesible **dentro de la aplicación** en la ruta `/guia-ia
 - [Setup completo](docs/setup.md) — instalación, variables de entorno, Docker.
 - [API](docs/api.md) — endpoints, ejemplos y estados de cita.
 - [Línea gráfica](docs/linea-grafica.md) — Oliva y miel (tokens y tipografía).
+- [Plan de seguridad](docs/plan-seguridad.md) — amenazas, controles y pipeline.
 - [Roadmap de features para clase](docs/roadmap-features.md) — ideas de demos con IA.
-- [Prompts](docs/prompts/00-overview.md) — índice 00–16 (incluye UI y cancel/filtros).
+- [Prompts](docs/prompts/00-overview.md) — índice 00–18.
 
 ## Tests
 
@@ -124,18 +127,20 @@ cd frontend && npm test   # 41 tests (store + router + componentes + api)
 
 ## CI/CD
 
-- `.github/workflows/ci.yml`: tests del backend y frontend + build del frontend
-  en cada push.
-- `.github/workflows/docker.yml`: construye y publica imágenes en
-  `ghcr.io/<usuario>/<repo>-backend|frontend` en main y tags `v*`.
+- `.github/workflows/ci.yml`: tests del backend y frontend + build del frontend.
+- `.github/workflows/security.yml`: gates Fase B — `npm audit` prod (HIGH+),
+  Gitleaks y Trivy FS (CRITICAL). Ver [plan de seguridad](docs/plan-seguridad.md).
+- `.github/workflows/docker.yml`: build → Trivy imagen (CRITICAL) → push a
+  `ghcr.io/<usuario>/<repo>-backend|frontend` en `main` y tags `v*`.
 
 ## Notas de seguridad (demo)
 
 Este es un proyecto educativo: el token JWT se guarda en `localStorage` (solo
 para demo), las contraseñas se almacenan con bcrypt, y los secretos van en `.env`
-(no versionado). Para un entorno real con datos de pacientes, añade cifrado en
-tránsito, refresh tokens, control de acceso y cumplimiento de normativas
-locales de salud.
+(no versionado). El [plan de seguridad](docs/plan-seguridad.md) describe amenazas
+(STRIDE), controles y el camino Fase A → B (quality gates). Para un entorno real
+con datos de pacientes, añade cifrado en tránsito, refresh tokens y cumplimiento
+de normativas locales de salud.
 
 ## Licencia
 

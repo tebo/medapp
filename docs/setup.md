@@ -63,6 +63,8 @@ La UI usa la línea gráfica **Oliva y miel** (Fraunces + Figtree, tokens oliva/
 Detalle: [linea-grafica.md](./linea-grafica.md). Para iterar con IA, usa el prompt
 `docs/prompts/16-linea-grafica.md`.
 
+Seguridad y DevSecOps (audit, secretos, Trivy): [plan-seguridad.md](./plan-seguridad.md).
+
 ### Variables de entorno del frontend
 
 | Variable | Valor por defecto | Descripción |

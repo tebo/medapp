@@ -40,7 +40,26 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}
 
-      - name: Build y push backend
+      - name: Build backend (local tag for scan)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile.backend
+          push: false
+          load: true
+          tags: medapp-backend:scan
+          labels: ${{ steps.meta-backend.outputs.labels }}
+
+      - name: Trivy scan backend image (gate CRITICAL)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: medapp-backend:scan
+          severity: CRITICAL
+          exit-code: '1'
+          format: table
+          ignore-unfixed: true
+
+      - name: Push backend
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -49,7 +68,26 @@ jobs:
           tags: ${{ steps.meta-backend.outputs.tags }}
           labels: ${{ steps.meta-backend.outputs.labels }}
 
-      - name: Build y push frontend
+      - name: Build frontend (local tag for scan)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile.frontend
+          push: false
+          load: true
+          tags: medapp-frontend:scan
+          labels: ${{ steps.meta-frontend.outputs.labels }}
+
+      - name: Trivy scan frontend image (gate CRITICAL)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: medapp-frontend:scan
+          severity: CRITICAL
+          exit-code: '1'
+          format: table
+          ignore-unfixed: true
+
+      - name: Push frontend
         uses: docker/build-push-action@v6
         with:
           context: .

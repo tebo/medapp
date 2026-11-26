@@ -1,0 +1,74 @@
+name: Security
+
+# Plan de seguridad Fase B: quality gates en PR/push.
+# Ver docs/plan-seguridad.md
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  dependency-audit:
+    name: npm audit (producción)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package: [backend, frontend]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ${{ matrix.package }}/package-lock.json
+
+      - name: Instalar dependencias
+        working-directory: ${{ matrix.package }}
+        run: npm ci
+
+      - name: Auditar dependencias de producción (gate HIGH+)
+        working-directory: ${{ matrix.package }}
+        run: |
+          echo "::group::npm audit --omit=dev --audit-level=high (${{ matrix.package }})"
+          npm audit --omit=dev --audit-level=high
+          echo "::endgroup::"
+
+  secrets-scan:
+    name: Gitleaks (secretos)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Escanear secretos
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  trivy-fs:
+    name: Trivy (filesystem)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Scan filesystem (gate CRITICAL)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: CRITICAL
+          exit-code: '1'
+          format: table
+          ignore-unfixed: true
