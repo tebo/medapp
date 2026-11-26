@@ -164,8 +164,8 @@ Diagrama pedagógico sugerido (hexagonal mínimo):
 5. **Observabilidad** — C5 auditoría + UI historial.
 6. **Admin** — E3 métricas + rol `admin`.
 
-### Arquitectura (nuevos)
-7. **Capas limpias** — F1 + F3 (controller delgado + use case Cancel).
+### Arquitectura
+7. **Capas limpias** — F1 + F3 (controller delgado + use case Cancel). ✅ `application/appointments` + prompt 17.
 8. **Máquina de estados** — F6 (transiciones explícitas + tests de ilegales).
 9. **Hexagonal en miniatura** — F4 Clock + F2 Repository solo en citas.
 10. **Eventos de dominio** — F5 `AppointmentCancelled` → notificación in-app (E2 light).

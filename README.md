@@ -44,10 +44,11 @@ demoapp1/
 ├── docker/                   # Dockerfiles y configuración nginx
 ├── backend/                  # API: Express + better-sqlite3 + JWT
 │   ├── src/
+│   │   ├── application/      # use cases (capas limpias: citas)
 │   │   ├── db/               # conexión, migraciones y semilla
 │   │   ├── models/           # SQL de acceso a datos
-│   │   ├── services/         # lógica de negocio
-│   │   ├── controllers/      # handlers HTTP
+│   │   ├── services/         # helpers de dominio (p. ej. users)
+│   │   ├── controllers/      # handlers HTTP delgados
 │   │   ├── middleware/       # autenticación/autorización y errores
 │   │   ├── routes/           # endpoints por dominio (auth, doctors, citas)
 │   │   └── utils/            # validaciones (fecha/hora)
@@ -117,7 +118,7 @@ La misma guía está accesible **dentro de la aplicación** en la ruta `/guia-ia
 ## Tests
 
 ```bash
-cd backend  && npm test   # 73 tests (auth + citas + médicos + unitarias)
+cd backend  && npm test   # 79 tests (auth + citas + use cases + unitarias)
 cd frontend && npm test   # 41 tests (store + router + componentes + api)
 ```
 
