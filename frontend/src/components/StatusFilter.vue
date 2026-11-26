@@ -35,17 +35,19 @@ defineEmits(['update:modelValue'])
 .status-filter {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.45rem;
   margin-bottom: 1rem;
 }
 
 .filter-chip {
-  border: 1px solid var(--gray-300);
-  background: #fff;
-  color: var(--gray-600);
-  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: rgb(255 255 255 / 0.7);
+  color: var(--ink-soft);
+  border-radius: var(--radius-sm);
   padding: 0.35rem 0.75rem;
   font-size: 0.85rem;
+  font-family: var(--font-body);
+  font-weight: 600;
   cursor: pointer;
 }
 
@@ -53,5 +55,10 @@ defineEmits(['update:modelValue'])
   border-color: var(--primary);
   background: var(--primary);
   color: #fff;
+}
+
+.filter-chip:hover:not(.active) {
+  border-color: var(--primary);
+  color: var(--primary-dark);
 }
 </style>

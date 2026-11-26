@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useAuth } from '../composables/useAuth'
+import BrandMark from '../components/BrandMark.vue'
 
 const { register } = useAuth()
 
@@ -33,7 +34,11 @@ async function onSubmit() {
 
 <template>
   <div class="container auth-wrap">
-    <form class="card auth-card" @submit.prevent="onSubmit">
+    <form class="auth-card" @submit.prevent="onSubmit">
+      <div class="auth-brand">
+        <BrandMark />
+        <span class="brand-wordmark">MedApp</span>
+      </div>
       <h1>Crear cuenta</h1>
       <p class="text-muted mb-2">Elige si eres paciente o médico</p>
 
@@ -44,11 +49,11 @@ async function onSubmit() {
         <div class="role-options">
           <label class="role-option" :class="{ selected: role === 'patient' }">
             <input v-model="role" type="radio" value="patient" />
-            <span>🧑‍⚕️ Paciente</span>
+            <span>Paciente</span>
           </label>
           <label class="role-option" :class="{ selected: role === 'doctor' }">
             <input v-model="role" type="radio" value="doctor" />
-            <span>🩺 Médico</span>
+            <span>Médico</span>
           </label>
         </div>
       </div>
@@ -85,19 +90,59 @@ async function onSubmit() {
 </template>
 
 <style scoped>
-.auth-wrap { display: flex; justify-content: center; padding-top: 3rem; }
-.auth-card { max-width: 440px; width: 100%; }
-.auth-card h1 { font-size: 1.4rem; margin-bottom: 0.25rem; }
+.auth-wrap {
+  display: flex;
+  justify-content: center;
+  padding-top: 2.5rem;
+}
 
-.role-options { display: flex; gap: 0.75rem; }
+.auth-card {
+  max-width: 460px;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem 1.5rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.auth-brand .brand-wordmark {
+  font-size: 1.4rem;
+}
+
+.auth-card h1 {
+  font-size: 1.55rem;
+  margin-bottom: 0.25rem;
+}
+
+.role-options {
+  display: flex;
+  gap: 0.75rem;
+}
+
 .role-option {
   flex: 1;
-  border: 2px solid var(--gray-300);
-  border-radius: var(--radius);
-  padding: 0.6rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem;
   text-align: center;
   cursor: pointer;
+  font-weight: 600;
+  background: #fff;
 }
+
 .role-option input { display: none; }
-.role-option.selected { border-color: var(--primary); background: #eff6ff; }
+
+.role-option.selected {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+}
 </style>

@@ -40,8 +40,9 @@ async function onSubmit() {
 </script>
 
 <template>
-  <form class="card" @submit.prevent="onSubmit">
+  <form class="card request-form" @submit.prevent="onSubmit">
     <h3>Solicitar nueva cita</h3>
+    <p class="text-muted form-lead">Elige médico, fecha y un motivo breve.</p>
 
     <div v-if="error" class="alert-error">{{ error }}</div>
 
@@ -78,9 +79,23 @@ async function onSubmit() {
 </template>
 
 <style scoped>
+.request-form h3 {
+  font-size: 1.35rem;
+  margin-bottom: 0.25rem;
+}
+
+.form-lead {
+  margin-bottom: 1rem;
+  font-size: 0.92rem;
+}
+
 .grid-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+}
+
+@media (max-width: 480px) {
+  .grid-row { grid-template-columns: 1fr; }
 }
 </style>

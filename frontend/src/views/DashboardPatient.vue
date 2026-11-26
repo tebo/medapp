@@ -82,12 +82,9 @@ onMounted(loadAppointments)
 </template>
 
 <style scoped>
-.page-title { font-size: 1.5rem; margin-top: 1rem; }
-.alert-success {
-  background: #dcfce7;
-  color: var(--success);
-  padding: 0.75rem;
-  border-radius: var(--radius);
-  margin-bottom: 1rem;
+.page-title {
+  font-size: clamp(1.6rem, 3vw, 2rem);
+  margin-top: 0.5rem;
+  margin-bottom: 0.35rem;
 }
 </style>

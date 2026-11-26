@@ -89,7 +89,7 @@ const activeChapter = computed(() => chapters.find((c) => c.id === active.value)
 
 <template>
   <div class="container">
-    <header class="card header">
+    <header class="header">
       <h1>Guía de uso de Asistencia de IA</h1>
       <p class="text-muted">
         Aprende a sacar partido a la IA en el desarrollo. Esta misma aplicación se puede
@@ -112,7 +112,7 @@ const activeChapter = computed(() => chapters.find((c) => c.id === active.value)
 
     <section class="card chapter">
       <p class="text-muted doc-link">
-        📄 Documento completo: <code>{{ activeChapter.doc }}</code>
+        Documento completo: <code>{{ activeChapter.doc }}</code>
       </p>
       <article v-for="(item, idx) in activeChapter.content" :key="idx" class="item">
         <h3>{{ item.h }}</h3>
@@ -123,9 +123,16 @@ const activeChapter = computed(() => chapters.find((c) => c.id === active.value)
 </template>
 
 <style scoped>
-.header { margin-top: 1rem; }
-.header h1 { font-size: 1.6rem; }
-code { background: var(--gray-100); padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.9em; }
+.header {
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+  max-width: 52ch;
+}
+
+.header h1 {
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  margin-bottom: 0.45rem;
+}
 
 .tabs {
   display: flex;
@@ -135,13 +142,15 @@ code { background: var(--gray-100); padding: 0.1rem 0.35rem; border-radius: 4px;
 }
 
 .tab {
-  padding: 0.45rem 0.9rem;
-  border: 1px solid var(--gray-300);
-  border-radius: 999px;
-  background: var(--white);
-  color: var(--gray-700);
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgb(255 255 255 / 0.7);
+  color: var(--ink-soft);
   cursor: pointer;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
+  font-family: var(--font-body);
+  font-weight: 600;
 }
 
 .tab.active {
@@ -150,8 +159,23 @@ code { background: var(--gray-100); padding: 0.1rem 0.35rem; border-radius: 4px;
   color: var(--white);
 }
 
-.doc-link { font-size: 0.9rem; margin-bottom: 0.75rem; }
+.doc-link { font-size: 0.9rem; margin-bottom: 0.85rem; }
 
-.item { margin-bottom: 1rem; }
-.item h3 { font-size: 1.05rem; margin-bottom: 0.25rem; color: var(--primary-dark); }
+.item {
+  margin-bottom: 1.1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.item h3 {
+  font-size: 1.08rem;
+  margin-bottom: 0.3rem;
+  color: var(--primary-dark);
+}
 </style>
